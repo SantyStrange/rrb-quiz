@@ -2,1828 +2,1697 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bilingual Current Affairs Master Quiz (60 Questions)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>RRB Online Examination System - CBT Practice Mock Test</title>
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & Noto Sans Tamil -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Mukta+Malar:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
   <style>
     body {
-      font-family: 'Inter', 'Mukta Malar', sans-serif;
+      font-family: 'Inter', 'Noto Sans Tamil', -apple-system, BlinkMacSystemFont, sans-serif;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
     }
-    .custom-scrollbar::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
+
+    /* RRB Question Palette Badges (Authentic TCS iON Styling) */
+    .palette-btn {
+      position: relative;
+      width: 36px;
+      height: 34px;
+      min-width: 36px;
+      min-height: 34px;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      cursor: pointer;
+      user-select: none;
+      border-radius: 4px;
     }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background-color: #cbd5e1;
-      border-radius: 9999px;
+    .palette-btn:active {
+      transform: scale(0.92);
+    }
+    .st-not-visited {
+      background-color: #f3f4f6;
+      color: #374151;
+      border: 1.5px solid #d1d5db;
+    }
+    .st-not-answered {
+      background-color: #dc2626;
+      color: #ffffff;
+      clip-path: polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%);
+      border: none;
+    }
+    .st-answered {
+      background-color: #16a34a;
+      color: #ffffff;
+      clip-path: polygon(0% 0%, 100% 0%, 85% 100%, 15% 100%);
+      border: none;
+    }
+    .st-marked {
+      background-color: #7e22ce;
+      color: #ffffff;
+      border-radius: 50%;
+      border: none;
+    }
+    .st-marked-answered {
+      background-color: #7e22ce;
+      color: #ffffff;
+      border-radius: 50%;
+      border: none;
+      position: relative;
+    }
+    .st-marked-answered::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      width: 9px;
+      height: 9px;
+      background-color: #22c55e;
+      border-radius: 50%;
+      border: 1.5px solid #ffffff;
+    }
+    .palette-btn.active-q {
+      outline: 3px solid #2563eb;
+      outline-offset: 2px;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.4);
+      z-index: 10;
+    }
+
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #94a3b8;
+      border-radius: 4px;
     }
   </style>
 </head>
-<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
+<body class="bg-slate-100 text-gray-800 min-h-screen flex flex-col justify-between overflow-x-hidden">
 
-  <!-- TOP HEADER / TIMER BAR -->
-  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm transition-all">
-    <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <span class="inline-flex items-center justify-center p-2 rounded-xl bg-indigo-600 text-white shadow-md shadow-indigo-100">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-          </svg>
-        </span>
-        <div>
-          <h1 class="font-bold text-slate-900 leading-tight text-sm sm:text-base">Current Affairs Exam Drill</h1>
-          <p class="text-xs text-slate-500 font-medium">Bilingual • 60 Questions • 15 Mins</p>
+  <!-- ========================================== -->
+  <!-- 1. START / INSTRUCTIONS SCREEN             -->
+  <!-- ========================================== -->
+  <div id="startScreen" class="fixed inset-0 z-50 bg-slate-900 flex flex-col overflow-y-auto">
+    <!-- Header -->
+    <header class="bg-slate-800 text-white border-b-4 border-amber-500 py-3 px-4 shadow">
+      <div class="max-w-4xl mx-auto flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="bg-amber-500 text-slate-900 p-2 rounded-lg font-black text-lg">
+            <i class="fa-solid fa-train"></i>
+          </div>
+          <div>
+            <h1 class="font-extrabold text-sm sm:text-lg tracking-wide uppercase">Railway Recruitment Control Board</h1>
+            <p class="text-xs text-amber-400 font-medium">RRB CBT Stage-1 Practice Portal | முக்கியமான நாட்கள் கையேடு வினாடிவினா</p>
+          </div>
+        </div>
+        <div class="hidden sm:flex items-center space-x-2 text-xs bg-slate-700/80 px-3 py-1.5 rounded border border-slate-600">
+          <i class="fa-solid fa-shield-halved text-amber-400"></i>
+          <span>Official Mock Interface</span>
         </div>
       </div>
+    </header>
 
-      <!-- TIMER & SUBMIT BUTTON -->
-      <div class="flex items-center space-x-2 sm:space-x-3">
-        <div id="timerContainer" class="flex items-center space-x-2 px-3 py-1.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 font-mono font-bold text-sm sm:text-base shadow-inner">
-          <svg class="w-4 h-4 text-slate-500 animate-spin-slow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="9" stroke-width="2"></circle>
-            <path stroke-linecap="round" stroke-width="2" d="M12 7v5l3 3"></path>
-          </svg>
-          <span id="timerDisplay">15:00</span>
-        </div>
-        <button id="topSubmitBtn" onclick="confirmSubmit()" class="hidden sm:inline-flex items-center px-4 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-semibold text-xs sm:text-sm shadow-sm transition">
-          Submit Test
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- MAIN CONTAINER -->
-  <main class="flex-1 max-w-4xl w-full mx-auto p-4 sm:p-6 pb-20">
-
-    <!-- START SCREEN -->
-    <div id="startScreen" class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-xl max-w-2xl mx-auto my-6 text-center space-y-6">
-      <div class="w-20 h-20 bg-indigo-50 text-indigo-600 rounded-3xl flex items-center justify-center mx-auto shadow-inner">
-        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-        </svg>
-      </div>
-      <div>
-        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Bilingual Practice Test</h2>
-        <p class="text-slate-600 mt-2 text-sm sm:text-base">Comprehensive current affairs evaluation prepared for competitive examinations.</p>
-      </div>
-
-      <!-- Quick Metrics Grid -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 py-2 text-left">
-        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
-          <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider block">Questions</span>
-          <span class="text-lg font-bold text-slate-800">60 Items</span>
-        </div>
-        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
-          <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider block">Duration</span>
-          <span class="text-lg font-bold text-slate-800">15 Minutes</span>
-        </div>
-        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
-          <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider block">Languages</span>
-          <span class="text-lg font-bold text-slate-800">ENG + தமிழ்</span>
-        </div>
-        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
-          <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider block">Topics</span>
-          <span class="text-lg font-bold text-slate-800">12 Domains</span>
-        </div>
-      </div>
-
-      <div class="text-xs sm:text-sm text-slate-500 bg-indigo-50/50 p-4 rounded-2xl border border-indigo-100/60 text-left space-y-1.5">
-        <p class="font-semibold text-indigo-900">Important Instructions / முக்கிய குறிப்புகள்:</p>
-        <p>• 15 minutes overall timer with auto-submit on completion.</p>
-        <p>• Every session randomly shuffles both question sequence and option placements.</p>
-        <p>• Question palette is conveniently placed directly below the navigation buttons for mobile-friendly ergonomics.</p>
-      </div>
-
-      <button onclick="startQuiz()" class="w-full py-3.5 px-6 rounded-2xl bg-indigo-600 hover:bg-indigo-700 active:scale-98 text-white font-bold text-base shadow-lg shadow-indigo-200 transition-all">
-        Start Test Now / தேர்வை தொடங்கு
-      </button>
-    </div>
-
-    <!-- QUIZ INTERFACE -->
-    <div id="quizInterface" class="hidden space-y-5">
-
-      <!-- PROGRESS & TOPIC PILL -->
-      <div class="flex items-center justify-between bg-white px-4 py-2.5 rounded-2xl border border-slate-200 shadow-sm text-xs sm:text-sm font-semibold">
-        <div class="flex items-center space-x-2">
-          <span class="px-2.5 py-1 rounded-lg bg-indigo-100 text-indigo-700 font-bold" id="currentTopicBadge">General</span>
-          <span class="text-slate-400">|</span>
-          <span class="text-slate-600">Question <strong id="questionNumberText" class="text-indigo-600">1</strong> of 60</span>
-        </div>
-        <div class="flex items-center space-x-2">
-          <button id="markReviewBtn" onclick="toggleReviewCurrent()" class="px-3 py-1 rounded-xl border border-amber-300 text-amber-700 bg-amber-50 hover:bg-amber-100 transition active:scale-95 text-xs font-semibold flex items-center space-x-1">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
-            </svg>
-            <span id="markReviewText">Mark for Review</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- MAIN QUESTION CARD -->
-      <div class="bg-white rounded-3xl p-5 sm:p-8 border border-slate-200 shadow-sm transition-all space-y-6">
+    <!-- Main Instruction Content -->
+    <main class="flex-1 max-w-4xl w-full mx-auto p-4 sm:p-6 text-slate-100">
+      <div class="bg-slate-800/95 border border-slate-700 rounded-xl p-4 sm:p-6 shadow-xl space-y-6">
         
-        <!-- Question Statements -->
-        <div class="space-y-3">
-          <div class="text-base sm:text-lg font-bold text-slate-900 leading-snug flex items-start space-x-2">
-            <span class="text-indigo-600 select-none" id="qNumPrefix">Q1.</span>
-            <span id="questionTextEn"></span>
+        <!-- Exam Title Strip -->
+        <div class="border-b border-slate-700 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <h2 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
+              <span class="text-amber-400">RRB CBT Exam:</span> Important Days & Dates
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-400">100% நேரடி வினாக்கள் - கையேட்டின் அடிப்படையில் அமைக்கப்பட்ட வினாடிவினா</p>
           </div>
-          <div class="text-sm sm:text-base font-semibold text-slate-700 leading-relaxed bg-slate-50 p-3.5 rounded-2xl border border-slate-100" id="questionTextTa">
+          <div class="flex items-center gap-2">
+            <span class="bg-blue-600/30 text-blue-300 border border-blue-500/50 text-xs px-2.5 py-1 rounded-md font-semibold">
+              <i class="fa-solid fa-clock mr-1"></i> 15 Minutes
+            </span>
+            <span class="bg-emerald-600/30 text-emerald-300 border border-emerald-500/50 text-xs px-2.5 py-1 rounded-md font-semibold">
+              <i class="fa-solid fa-list-ol mr-1"></i> 50 Questions
+            </span>
           </div>
         </div>
 
-        <!-- Options Container -->
-        <div id="optionsContainer" class="space-y-3">
-          <!-- Dynamically populated 4 options -->
+        <!-- Candidate Preview Card -->
+        <div class="bg-slate-700/50 rounded-lg p-3 sm:p-4 border border-slate-600 flex items-center space-x-3 sm:space-x-4">
+          <div class="w-14 h-14 bg-slate-600 rounded-full flex items-center justify-center text-slate-300 border-2 border-amber-400 text-2xl shrink-0">
+            <i class="fa-solid fa-user-astronaut"></i>
+          </div>
+          <div class="text-xs sm:text-sm">
+            <p class="font-bold text-white text-base">Candidate: <span class="text-amber-300">Railway Aspirant</span></p>
+            <p class="text-slate-300">Roll No: <span class="font-mono text-white font-semibold">2409-RRB-CBT-50</span> | Medium: <span class="text-white font-semibold">Bilingual (English & தமிழ்)</span></p>
+            <p class="text-slate-400 text-[11px] mt-0.5">Subject: General Awareness • 50 Direct Date & Day Questions</p>
+          </div>
         </div>
 
-      </div>
-
-      <!-- ACTION & NAVIGATION CONTROLS -->
-      <div class="bg-white rounded-2xl p-3 sm:p-4 border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-2">
-        <div class="flex items-center space-x-2">
-          <button id="prevBtn" onclick="navigateQuestion(-1)" class="px-4 py-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs sm:text-sm font-semibold transition active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed">
-            &larr; Previous
-          </button>
-          <button id="nextBtn" onclick="navigateQuestion(1)" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold shadow-sm transition active:scale-95">
-            Next &rarr;
-          </button>
-        </div>
-
-        <div class="flex items-center space-x-2">
-          <button onclick="clearCurrentSelection()" class="px-3.5 py-2 rounded-xl border border-rose-200 text-rose-600 bg-rose-50 hover:bg-rose-100 text-xs sm:text-sm font-semibold transition active:scale-95">
-            Clear Answer
-          </button>
-          <button onclick="confirmSubmit()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold shadow-sm transition active:scale-95">
-            Submit Test
-          </button>
-        </div>
-      </div>
-
-      <!-- QUESTION NUMBER PALETTE (PLACED DIRECTLY BELOW NAV BUTTONS) -->
-      <div class="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm space-y-4">
-        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
-          <h3 class="font-bold text-slate-800 text-sm flex items-center space-x-2">
-            <span>Question Palette (60 Questions)</span>
+        <!-- Instructions Box (Bilingual) -->
+        <div class="space-y-4 text-xs sm:text-sm leading-relaxed text-slate-300">
+          <h3 class="font-bold text-amber-400 uppercase tracking-wider text-sm flex items-center gap-2">
+            <i class="fa-solid fa-circle-info"></i> Please Read Instructions Carefully / வழிமுறைகளை கவனமாக படிக்கவும்
           </h3>
-          <div class="flex flex-wrap items-center gap-2 sm:gap-4 text-xs font-medium text-slate-600">
-            <span class="inline-flex items-center space-x-1.5"><span class="w-3 h-3 rounded bg-emerald-500"></span><span>Answered</span></span>
-            <span class="inline-flex items-center space-x-1.5"><span class="w-3 h-3 rounded bg-amber-400"></span><span>Review</span></span>
-            <span class="inline-flex items-center space-x-1.5"><span class="w-3 h-3 rounded bg-slate-200"></span><span>Unvisited/Skipped</span></span>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- English Column -->
+            <div class="bg-slate-900/60 p-3 sm:p-4 rounded-lg border border-slate-700 space-y-2">
+              <h4 class="font-bold text-white border-b border-slate-700 pb-1 flex items-center gap-1.5">
+                <i class="fa-solid fa-book-open text-blue-400"></i> Instructions (English)
+              </h4>
+              <ul class="list-disc pl-4 space-y-1.5 text-slate-300">
+                <li>Total test duration is <strong class="text-white">15 minutes (900 seconds)</strong>.</li>
+                <li>The test contains <strong class="text-white">50 Direct Questions</strong> extracted 100% strictly from the PDF notes.</li>
+                <li><strong class="text-green-400">+1.00 Mark</strong> is awarded for each correct answer.</li>
+                <li><strong class="text-rose-400">-0.33 Mark</strong> negative penalty applies for every incorrect answer (Standard Railway 1/3 penalty).</li>
+                <li>Question order and options are randomly shuffled for every session.</li>
+                <li>The question palette is located at the <strong class="text-white">bottom</strong> for seamless mobile thumb usage.</li>
+              </ul>
+            </div>
+
+            <!-- Tamil Column -->
+            <div class="bg-slate-900/60 p-3 sm:p-4 rounded-lg border border-slate-700 space-y-2 font-['Noto_Sans_Tamil']">
+              <h4 class="font-bold text-white border-b border-slate-700 pb-1 flex items-center gap-1.5">
+                <i class="fa-solid fa-language text-amber-400"></i> தேர்வு வழிமுறைகள் (தமிழ்)
+              </h4>
+              <ul class="list-disc pl-4 space-y-1.5 text-slate-300">
+                <li>மொத்த தேர்வு கால அளவு <strong class="text-white">15 நிமிடங்கள் (900 வினாடிகள்)</strong>.</li>
+                <li>பாடக்குறிப்பிலிருந்து நேரடியாக எடுக்கப்பட்ட <strong class="text-white">50 வினாக்கள்</strong> இதில் உள்ளன.</li>
+                <li>ஒவ்வொரு சரியான பதிலுக்கும் <strong class="text-green-400">+1.00 மதிப்பெண்</strong> வழங்கப்படும்.</li>
+                <li>தவறான பதிலுக்கு <strong class="text-rose-400">-0.33 மதிப்பெண் (1/3) கழிவு</strong> செய்யப்படும்.</li>
+                <li>ஒவ்வொரு அமர்விலும் வினாக்கள் மற்றும் விருப்பங்கள் முழுமையாக குலுக்கப்பட்டு வழங்கப்படும்.</li>
+                <li>மொபைலில் எளிதாக தேர்வு செய்ய வினா எண் பலகை <strong class="text-white">திரையின் கீழே</strong> அமைக்கப்பட்டுள்ளது.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Color Coding Symbols -->
+          <div class="bg-slate-900/80 p-3 sm:p-4 rounded-lg border border-slate-700">
+            <h4 class="font-semibold text-white text-xs mb-2.5">Question Status Legend / வினா நிலைக் குறியீடுகள்:</h4>
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-[11px]">
+              <div class="flex items-center space-x-2">
+                <span class="palette-btn st-not-visited !w-6 !h-6 !text-[11px]">1</span>
+                <span>Not Visited / பார்க்காதவை</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <span class="palette-btn st-not-answered !w-6 !h-6 !text-[11px]">2</span>
+                <span>Not Answered / பதிலளிக்காதவை</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <span class="palette-btn st-answered !w-6 !h-6 !text-[11px]">3</span>
+                <span>Answered / விடையளித்தவை</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <span class="palette-btn st-marked !w-6 !h-6 !text-[11px]">4</span>
+                <span>Marked / மதிப்பாய்வுக்கு</span>
+              </div>
+              <div class="flex items-center space-x-2 col-span-2 sm:col-span-1">
+                <span class="palette-btn st-marked-answered !w-6 !h-6 !text-[11px]">5</span>
+                <span>Ans & Marked / கணக்கில் கொள்ளப்படும்</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Declaration Checkbox -->
+          <div class="bg-amber-950/30 border border-amber-600/40 p-3 rounded-lg flex items-start space-x-2.5">
+            <input type="checkbox" id="agreeDisclaimer" class="mt-1 w-4 h-4 text-blue-600 rounded cursor-pointer accent-amber-500">
+            <label for="agreeDisclaimer" class="text-xs text-amber-200/90 cursor-pointer select-none">
+              I have read and understood all the examination instructions. I understand that negative marking of 1/3 (-0.33) is applicable for wrong answers.
+              <br><span class="text-amber-400 font-['Noto_Sans_Tamil']">அனைத்து வழிமுறைகளையும் படித்து ஏற்றுக்கொண்டு தேர்வை தொடங்க தயாராக உள்ளேன்.</span>
+            </label>
           </div>
         </div>
 
-        <div id="paletteGrid" class="grid grid-cols-6 sm:grid-cols-10 md:grid-cols-12 gap-2 pt-1 max-h-56 overflow-y-auto custom-scrollbar pr-1">
-          <!-- 60 buttons generated by JS -->
+        <!-- Start Button -->
+        <div class="pt-2 text-center">
+          <button id="startTestBtn" disabled class="w-full sm:w-auto px-8 py-3.5 bg-gray-600 cursor-not-allowed text-white font-extrabold text-base rounded-xl shadow-lg transition-all flex items-center justify-center mx-auto space-x-2 uppercase tracking-wider">
+            <i class="fa-solid fa-play"></i>
+            <span>I Am Ready to Begin / தொடங்கு</span>
+          </button>
+          <p id="checkNotice" class="text-[11px] text-amber-400 mt-2 font-medium">Please check the confirmation box above to activate the test button.</p>
         </div>
+
       </div>
+    </main>
+  </div>
 
-    </div>
-
-    <!-- RESULT & REVIEW SCREEN -->
-    <div id="resultScreen" class="hidden space-y-6">
-      
-      <!-- SCORE SUMMARY HERO -->
-      <div class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-xl text-center space-y-6">
-        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 mb-2">
-          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-          </svg>
+  <!-- ========================================== -->
+  <!-- 2. MAIN EXAM SCREEN (CONTAINER)            -->
+  <!-- ========================================== -->
+  <div id="examContainer" class="hidden flex-1 flex flex-col h-screen overflow-hidden">
+    
+    <!-- TOP STICKY APP BAR -->
+    <header class="bg-[#1e293b] text-white px-3 sm:px-4 py-2 border-b-2 border-amber-500 flex items-center justify-between shrink-0 shadow-md">
+      <div class="flex items-center space-x-2 sm:space-x-3">
+        <div class="bg-amber-500 text-gray-900 font-extrabold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded text-xs sm:text-sm uppercase flex items-center shadow-sm">
+          <i class="fa-solid fa-train mr-1.5"></i> RRB CBT
         </div>
         <div>
-          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Exam Performance Summary</h2>
-          <p class="text-slate-500 text-sm mt-1">Detailed evaluation of your 60-question current affairs test.</p>
+          <h2 class="text-xs sm:text-sm font-bold tracking-wide truncate max-w-[150px] sm:max-w-none">Important Days & Dates</h2>
+          <span class="text-[10px] text-gray-300 hidden sm:inline">General Awareness • 50 Questions • 1/3 Negative</span>
+        </div>
+      </div>
+
+      <!-- TIMER & USER INFO -->
+      <div class="flex items-center space-x-3">
+        <!-- Live Countdown Timer -->
+        <div class="flex items-center bg-gray-900 px-2.5 py-1 sm:px-3 sm:py-1 rounded-md border border-gray-700 shadow-inner">
+          <i class="fa-regular fa-clock text-amber-400 mr-1.5 text-xs sm:text-sm"></i>
+          <span class="text-[10px] text-gray-400 mr-1 uppercase font-semibold hidden sm:inline">Time Left:</span>
+          <span id="timerDisplay" class="font-mono font-bold text-sm sm:text-base text-amber-400 tracking-wider">15:00</span>
         </div>
 
-        <!-- STATS BOXES -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-left">
-          <div class="p-4 rounded-2xl bg-indigo-50 border border-indigo-100">
-            <span class="text-xs font-semibold text-indigo-500 uppercase">Total Score</span>
-            <p class="text-2xl font-black text-indigo-700 mt-1"><span id="scoreObtained">0</span> / 60</p>
+        <!-- Candidate Tiny Avatar -->
+        <div class="flex items-center space-x-1.5 border-l border-gray-700 pl-2">
+          <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-700 border border-amber-400/80 flex items-center justify-center text-amber-400 text-xs">
+            <i class="fa-solid fa-user"></i>
           </div>
-          <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-100">
-            <span class="text-xs font-semibold text-emerald-500 uppercase">Correct</span>
-            <p class="text-2xl font-black text-emerald-700 mt-1" id="correctCount">0</p>
+          <span class="text-xs text-slate-200 hidden md:inline font-semibold">Candidate</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- CENTER QUESTION VIEW AREA -->
+    <main class="flex-1 overflow-y-auto p-3 sm:p-5 bg-slate-50 flex flex-col">
+      <div class="max-w-4xl w-full mx-auto bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6 flex-1 flex flex-col justify-between">
+        
+        <div>
+          <!-- Question Meta Header -->
+          <div class="flex items-center justify-between border-b border-gray-200 pb-3 mb-4">
+            <div class="flex items-center space-x-2">
+              <span class="bg-blue-600 text-white text-xs sm:text-sm font-bold px-2.5 py-1 rounded">
+                Question <span id="currentQNum">1</span> / 50
+              </span>
+              <span class="text-xs font-semibold text-gray-500 bg-gray-100 px-2 py-1 rounded">Single Choice</span>
+            </div>
+            <div class="text-xs font-semibold flex items-center space-x-2">
+              <span class="text-green-700 bg-green-50 px-2 py-0.5 rounded border border-green-200">+1.00 Mark</span>
+              <span class="text-rose-700 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">-0.33 Penalty</span>
+            </div>
           </div>
-          <div class="p-4 rounded-2xl bg-rose-50 border border-rose-100">
-            <span class="text-xs font-semibold text-rose-500 uppercase">Incorrect</span>
-            <p class="text-2xl font-black text-rose-700 mt-1" id="incorrectCount">0</p>
+
+          <!-- Question Text (Bilingual Direct from PDF) -->
+          <div class="space-y-2 mb-6">
+            <p id="qTextEn" class="text-base sm:text-lg font-semibold text-gray-900 leading-snug"></p>
+            <p id="qTextTa" class="text-sm sm:text-base font-medium text-blue-900 font-['Noto_Sans_Tamil'] leading-relaxed bg-blue-50/60 p-2.5 rounded-lg border border-blue-100"></p>
           </div>
-          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200">
-            <span class="text-xs font-semibold text-slate-500 uppercase">Accuracy</span>
-            <p class="text-2xl font-black text-slate-800 mt-1" id="accuracyRate">0%</p>
+
+          <!-- Options Container -->
+          <div id="optionsContainer" class="space-y-2.5 mb-6">
+            <!-- Dynamic 4 Options injected by JS -->
           </div>
         </div>
 
-        <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
-          <button onclick="retakeQuiz()" class="px-6 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md transition active:scale-95">
-            Retake Test (New Shuffle)
+        <!-- Question Navigation Action Buttons -->
+        <div class="pt-4 border-t border-gray-200 flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center space-x-2">
+            <button id="btnPrev" class="px-3 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg text-xs sm:text-sm font-semibold transition active:scale-95 disabled:opacity-40">
+              <i class="fa-solid fa-chevron-left mr-1"></i> Prev
+            </button>
+            <button id="btnClear" class="px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-lg text-xs sm:text-sm font-semibold transition active:scale-95">
+              <i class="fa-solid fa-eraser mr-1"></i> Clear Response
+            </button>
+          </div>
+
+          <div class="flex items-center space-x-2">
+            <button id="btnMarkReview" class="px-3 sm:px-4 py-2 bg-purple-100 hover:bg-purple-200 text-purple-800 border border-purple-300 rounded-lg text-xs sm:text-sm font-bold transition active:scale-95">
+              <i class="fa-solid fa-tag mr-1"></i> Mark Review & Next
+            </button>
+            <button id="btnSaveNext" class="px-4 sm:px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-xs sm:text-sm font-bold shadow-md transition active:scale-95">
+              Save & Next <i class="fa-solid fa-chevron-right ml-1"></i>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- ========================================== -->
+    <!-- BOTTOM QUESTION PALETTE                    -->
+    <!-- ========================================== -->
+    <footer class="bg-white border-t-2 border-gray-300 shadow-xl shrink-0 z-30 transition-all">
+      
+      <!-- Drawer Bar: Toggle & Status Counter Quick Peek -->
+      <div class="bg-slate-800 text-white px-3 py-2 flex items-center justify-between text-xs cursor-pointer select-none" id="paletteToggleBar">
+        <div class="flex items-center space-x-3 overflow-x-auto py-0.5">
+          <span class="font-bold text-amber-400 flex items-center gap-1.5 whitespace-nowrap">
+            <i class="fa-solid fa-grip mr-1"></i> Question Palette (1 - 50)
+          </span>
+          <span class="hidden sm:inline-block text-slate-400">|</span>
+          <div class="flex items-center space-x-2 text-[11px] whitespace-nowrap">
+            <span class="text-green-400 font-semibold"><i class="fa-solid fa-check-circle"></i> <span id="statAns">0</span> Ans</span>
+            <span class="text-red-400 font-semibold"><i class="fa-solid fa-circle-xmark"></i> <span id="statNotAns">0</span> Not Ans</span>
+            <span class="text-purple-400 font-semibold"><i class="fa-solid fa-bookmark"></i> <span id="statMarked">0</span> Marked</span>
+          </div>
+        </div>
+        
+        <div class="flex items-center space-x-2">
+          <button id="toggleGridBtn" class="text-slate-300 hover:text-white px-2 py-0.5 rounded bg-slate-700 text-[11px] flex items-center gap-1">
+            <span id="toggleText">Collapse</span>
+            <i id="toggleIcon" class="fa-solid fa-chevron-down"></i>
           </button>
-          <a href="#detailedSolutions" class="px-6 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm transition">
-            View Explanations &darr;
-          </a>
+          <button id="btnSubmitTop" class="bg-red-600 hover:bg-red-700 text-white font-bold px-3 py-1 rounded text-xs shadow active:scale-95">
+            Submit Exam
+          </button>
         </div>
       </div>
 
-      <!-- DETAILED SOLUTIONS ACCORDION/LIST -->
-      <div id="detailedSolutions" class="bg-white rounded-3xl p-5 sm:p-8 border border-slate-200 shadow-sm space-y-6">
-        <div class="border-b border-slate-100 pb-4">
-          <h3 class="text-xl font-extrabold text-slate-900">Question Solutions & Explanations</h3>
-          <p class="text-slate-500 text-xs sm:text-sm mt-0.5">Review bilingual explanations for each of the 60 questions.</p>
+      <!-- Collapsible Grid & Legends Area -->
+      <div id="paletteContent" class="p-3 max-w-5xl mx-auto overflow-y-auto max-h-48 sm:max-h-56">
+        
+        <!-- Status Legends strip -->
+        <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-[10px] sm:text-xs text-gray-700 mb-2.5 pb-2 border-b border-gray-200">
+          <div class="flex items-center space-x-1.5">
+            <span class="palette-btn st-answered !w-5 !h-5 !text-[10px]"></span>
+            <span>Answered</span>
+          </div>
+          <div class="flex items-center space-x-1.5">
+            <span class="palette-btn st-not-answered !w-5 !h-5 !text-[10px]"></span>
+            <span>Not Answered</span>
+          </div>
+          <div class="flex items-center space-x-1.5">
+            <span class="palette-btn st-not-visited !w-5 !h-5 !text-[10px]"></span>
+            <span>Not Visited</span>
+          </div>
+          <div class="flex items-center space-x-1.5">
+            <span class="palette-btn st-marked !w-5 !h-5 !text-[10px]"></span>
+            <span>Marked for Review</span>
+          </div>
+          <div class="flex items-center space-x-1.5">
+            <span class="palette-btn st-marked-answered !w-5 !h-5 !text-[10px]"></span>
+            <span>Answered & Marked</span>
+          </div>
         </div>
 
-        <div id="solutionsList" class="space-y-6">
-          <!-- Filled by JS -->
+        <!-- 50 Question Buttons Grid -->
+        <div id="paletteGrid" class="grid grid-cols-10 sm:grid-cols-10 md:grid-cols-25 gap-1.5 justify-items-center">
+          <!-- 50 Buttons injected dynamically -->
         </div>
+
+        <!-- Submit Prompt Bar for Mobile -->
+        <div class="mt-3 text-center sm:hidden">
+          <button id="btnSubmitMobile" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded-lg text-xs shadow">
+            Final Exam Submit
+          </button>
+        </div>
+
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 3. SUBMISSION CONFIRMATION MODAL          -->
+  <!-- ========================================== -->
+  <div id="submitModal" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-5 space-y-4 border-2 border-amber-500">
+      <div class="flex items-center space-x-2 text-amber-600 border-b pb-2">
+        <i class="fa-solid fa-triangle-exclamation text-xl"></i>
+        <h3 class="text-base font-bold text-gray-900">Confirm Exam Submission</h3>
+      </div>
+      
+      <p class="text-xs text-gray-600">Are you sure you want to end your RRB CBT examination? Review your summary below:</p>
+
+      <div class="grid grid-cols-2 gap-2 text-xs bg-slate-50 p-3 rounded-lg border border-gray-200">
+        <div>Total Questions: <strong class="text-gray-900">50</strong></div>
+        <div>Answered: <strong class="text-green-600" id="modalAns">0</strong></div>
+        <div>Not Answered: <strong class="text-red-600" id="modalNotAns">0</strong></div>
+        <div>Marked for Review: <strong class="text-purple-600" id="modalMarked">0</strong></div>
+        <div>Not Visited: <strong class="text-gray-600" id="modalNotVis">0</strong></div>
+        <div>Time Remaining: <strong class="text-blue-600" id="modalTime">15:00</strong></div>
       </div>
 
-    </div>
-
-  </main>
-
-  <!-- CONFIRM SUBMISSION MODAL -->
-  <div id="submitModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 space-y-5 shadow-2xl animate-in fade-in zoom-in-95 duration-150">
-      <div class="text-center space-y-2">
-        <div class="w-12 h-12 rounded-full bg-amber-100 text-amber-600 mx-auto flex items-center justify-center font-bold text-xl">!</div>
-        <h3 class="text-lg font-bold text-slate-900">Are you ready to submit?</h3>
-        <p class="text-slate-500 text-xs sm:text-sm">Please verify your attempted questions before completing.</p>
-      </div>
-
-      <div class="bg-slate-50 rounded-2xl p-4 text-xs sm:text-sm space-y-2 border border-slate-100">
-        <div class="flex justify-between"><span>Answered:</span><strong id="modalAnsweredCount" class="text-emerald-600">0</strong></div>
-        <div class="flex justify-between"><span>Marked for Review:</span><strong id="modalReviewCount" class="text-amber-600">0</strong></div>
-        <div class="flex justify-between"><span>Unattempted:</span><strong id="modalUnattemptedCount" class="text-rose-600">0</strong></div>
-      </div>
-
-      <div class="grid grid-cols-2 gap-3 pt-2">
-        <button onclick="closeSubmitModal()" class="py-2.5 rounded-xl border border-slate-200 font-semibold text-xs sm:text-sm text-slate-700 hover:bg-slate-50">Continue Test</button>
-        <button onclick="finalizeSubmission()" class="py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 font-semibold text-xs sm:text-sm text-white shadow-sm">Yes, Submit</button>
+      <div class="flex items-center justify-end space-x-2 pt-2">
+        <button id="btnCancelSubmit" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg text-xs">
+          Cancel & Return
+        </button>
+        <button id="btnConfirmSubmit" class="px-5 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg text-xs shadow-md">
+          Yes, Final Submit
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- SCRIPT DATA & ENGINE -->
+  <!-- ========================================== -->
+  <!-- 4. SCORECARD & REVIEW SCREEN              -->
+  <!-- ========================================== -->
+  <div id="resultScreen" class="hidden min-h-screen bg-slate-100 flex-col">
+    <header class="bg-slate-900 text-white px-4 py-3 border-b-4 border-amber-500 shadow">
+      <div class="max-w-5xl mx-auto flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <i class="fa-solid fa-square-poll-vertical text-amber-400 text-2xl"></i>
+          <h1 class="text-base sm:text-lg font-bold">RRB CBT Scorecard & Detailed Review</h1>
+        </div>
+        <button id="btnRetake" class="px-3.5 py-1.5 bg-amber-500 hover:bg-amber-600 text-gray-900 font-bold text-xs sm:text-sm rounded-lg shadow">
+          <i class="fa-solid fa-rotate-right mr-1"></i> Retake Test
+        </button>
+      </div>
+    </header>
+
+    <main class="max-w-5xl w-full mx-auto p-3 sm:p-6 space-y-6">
+      
+      <!-- Performance Summary Cards -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm text-center">
+          <span class="text-xs text-gray-500 uppercase font-semibold">Net Total Score</span>
+          <p id="resNetScore" class="text-2xl sm:text-3xl font-extrabold text-blue-600 mt-1">0.00</p>
+          <span class="text-[11px] text-gray-400">Out of 50.00</span>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm text-center">
+          <span class="text-xs text-gray-500 uppercase font-semibold">Accuracy</span>
+          <p id="resAccuracy" class="text-2xl sm:text-3xl font-extrabold text-emerald-600 mt-1">0%</p>
+          <span class="text-[11px] text-gray-400">Correct / Attempted</span>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm text-center">
+          <span class="text-xs text-gray-500 uppercase font-semibold">Correct (+1.00)</span>
+          <p id="resCorrect" class="text-2xl sm:text-3xl font-extrabold text-green-600 mt-1">0</p>
+          <span class="text-[11px] text-gray-400" id="resPositiveMarks">+0.00 Marks</span>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm text-center">
+          <span class="text-xs text-gray-500 uppercase font-semibold">Wrong (-0.33)</span>
+          <p id="resWrong" class="text-2xl sm:text-3xl font-extrabold text-rose-600 mt-1">0</p>
+          <span class="text-[11px] text-gray-400" id="resNegativeMarks">-0.00 Penalty</span>
+        </div>
+      </div>
+
+      <!-- Quick Stats Strip -->
+      <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex flex-wrap items-center justify-around gap-2 text-xs">
+        <div>Total Attempted: <strong id="resAttempted" class="text-gray-900">0</strong> / 50</div>
+        <div>Unattempted: <strong id="resUnattempted" class="text-gray-900">0</strong></div>
+        <div>Time Taken: <strong id="resTimeTaken" class="text-gray-900">00:00</strong></div>
+      </div>
+
+      <!-- Detailed Bilingual Review Section -->
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4 sm:p-6 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-gray-200 gap-2">
+          <h2 class="text-base sm:text-lg font-bold text-gray-900 flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-blue-600"></i> Bilingual Solutions & Direct Notes from PDF
+          </h2>
+          <!-- Filter Buttons -->
+          <div class="flex items-center space-x-1.5 text-xs">
+            <button class="filter-btn active bg-blue-600 text-white px-2.5 py-1 rounded" data-filter="all">All (50)</button>
+            <button class="filter-btn bg-gray-100 text-gray-700 px-2.5 py-1 rounded" data-filter="wrong">Incorrect</button>
+            <button class="filter-btn bg-gray-100 text-gray-700 px-2.5 py-1 rounded" data-filter="unattempted">Skipped</button>
+          </div>
+        </div>
+
+        <div id="solutionList" class="space-y-4">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- JAVASCRIPT APPLICATION LOGIC -->
   <script>
-    // RAW QUIZ REPOSITORY (60 QUESTIONS ACROSS 12 TOPICS)
+    /* =======================================================
+       50 DIRECT BILINGUAL QUESTIONS STRICTLY FROM PDF
+       (No external topics, direct date/event matching)
+       ======================================================= */
     const RAW_QUESTIONS = [
-  {
-    "topic": "Days & Themes",
-    "q_en": "What is the theme of 'World Breastfeeding Week 2026' celebrated from August 01 to 07?",
-    "q_ta": "ஆகஸ்ட் 01 முதல் 07 வரை அனுசரிக்கப்பட்ட 'உலக தாய்ப்பால் வாரத்தின் (2026)' கருப்பொருள் (Theme) என்ன?",
-    "options_en": [
-      "Breastfeeding for a Sustainable Start in Life: Strengthen What Works",
-      "Closing the Gap: Breastfeeding Support for All",
-      "Enabling Breastfeeding: Making a Difference for Working Parents",
-      "Step Up for Breastfeeding: Educate and Support"
-    ],
-    "options_ta": [
-      "Breastfeeding for a Sustainable Start in Life: Strengthen What Works",
-      "Closing the Gap: Breastfeeding Support for All",
-      "Enabling Breastfeeding: Making a Difference for Working Parents",
-      "Step Up for Breastfeeding: Educate and Support"
-    ],
-    "correct": 0,
-    "exp_en": "World Breastfeeding Week is celebrated from August 1-7 with the theme 'Breastfeeding for a Sustainable Start in Life: Strengthen What Works'.",
-    "exp_ta": "உலக தாய்ப்பால் வாரம் ஆகஸ்ட் 1-7 வரை 'Breastfeeding for a Sustainable Start in Life: Strengthen What Works' என்ற கருப்பொருளுடன் அனுசரிக்கப்பட்டது."
-  },
-  {
-    "topic": "Days & Themes",
-    "q_en": "On which date is 'National Javelin Day' observed annually in India?",
-    "q_ta": "இந்தியாவில் ஆண்டுதோறும் 'தேசிய ஈட்டி எறிதல் தினம்' (National Javelin Day) எந்த நாளில் அனுசரிக்கப்படுகிறது?",
-    "options_en": [
-      "August 07",
-      "August 08",
-      "August 09",
-      "August 06"
-    ],
-    "options_ta": [
-      "ஆகஸ்ட் 07",
-      "ஆகஸ்ட் 08",
-      "ஆகஸ்ட் 09",
-      "ஆகஸ்ட் 06"
-    ],
-    "correct": 0,
-    "exp_en": "National Javelin Day is observed on August 07 to commemorate Neeraj Chopra's Olympic Gold Medal achievement.",
-    "exp_ta": "நீரஜ் சோப்ரா ஒலிம்பிக்கில் தங்கம் வென்ற வரலாற்று சாதனையை நினைவுகூரும் வகையில் ஆண்டுதோறும் ஆகஸ்ட் 07 அன்று தேசிய ஈட்டி எறிதல் தினம் அனுசரிக்கப்படுகிறது."
-  },
-  {
-    "topic": "Days & Themes",
-    "q_en": "What was the theme of the 'International Day of the World's Indigenous Peoples' observed on August 09?",
-    "q_ta": "ஆகஸ்ட் 09 அன்று அனுசரிக்கப்பட்ட 'உலகப் பழங்குடியினர் தினத்தின்' (International Day of the World's Indigenous Peoples) கருப்பொருள் என்ன?",
-    "options_en": [
-      "Honouring Indigenous Midwives: Safeguarding Life and Well-being",
-      "Indigenous Youth as Agents of Change for Self-determination",
-      "Leaving No One Behind: Indigenous Peoples and the Call for a New Social Contract",
-      "The Role of Indigenous Women in the Preservation of Traditional Knowledge"
-    ],
-    "options_ta": [
-      "Honouring Indigenous Midwives: Safeguarding Life and Well-being",
-      "Indigenous Youth as Agents of Change for Self-determination",
-      "Leaving No One Behind: Indigenous Peoples and the Call for a New Social Contract",
-      "The Role of Indigenous Women in the Preservation of Traditional Knowledge"
-    ],
-    "correct": 0,
-    "exp_en": "The theme for August 9 International Day of the World's Indigenous Peoples was 'Honouring Indigenous Midwives: Safeguarding Life and Well-being'.",
-    "exp_ta": "ஆகஸ்ட் 9 உலகப் பழங்குடியினர் தினத்தின் கருப்பொருள் 'Honouring Indigenous Midwives: Safeguarding Life and Well-being' என்பதாகும்."
-  },
-  {
-    "topic": "Days & Themes",
-    "q_en": "On which day is 'World Elephant Day' celebrated globally?",
-    "q_ta": "'உலக யானைகள் தினம்' (World Elephant Day) உலகளவில் எந்த நாளில் கொண்டாடப்படுகிறது?",
-    "options_en": [
-      "August 12",
-      "August 10",
-      "August 14",
-      "August 08"
-    ],
-    "options_ta": [
-      "ஆகஸ்ட் 12",
-      "ஆகஸ்ட் 10",
-      "ஆகஸ்ட் 14",
-      "ஆகஸ்ட் 08"
-    ],
-    "correct": 0,
-    "exp_en": "World Elephant Day and International Youth Day are celebrated every year on August 12.",
-    "exp_ta": "உலக யானைகள் தினம் மற்றும் சர்வதேச இளைஞர் தினம் ஆண்டுதோறும் ஆகஸ்ட் 12 அன்று கொண்டாடப்படுகிறது."
-  },
-  {
-    "topic": "Days & Themes",
-    "q_en": "'Quit India Movement Day' is observed in India on which date?",
-    "q_ta": "இந்தியாவில் 'வெள்ளையனே வெளியேறு இயக்க தினம்' (Quit India Movement Day) எந்த நாளில் அனுசரிக்கப்படுகிறது?",
-    "options_en": [
-      "August 08",
-      "August 09",
-      "August 06",
-      "August 15"
-    ],
-    "options_ta": [
-      "ஆகஸ்ட் 08",
-      "ஆகஸ்ட் 09",
-      "ஆகஸ்ட் 06",
-      "ஆகஸ்ட் 15"
-    ],
-    "correct": 0,
-    "exp_en": "Quit India Movement Day is observed on August 08 commemorating the launch of the movement in 1942.",
-    "exp_ta": "1942-இல் வெள்ளையனே வெளியேறு இயக்கம் தொடங்கப்பட்டதை நினைவுகூரும் வகையில் ஆகஸ்ட் 08 அன்று இத்தினம் அனுசரிக்கப்படுகிறது."
-  },
-  {
-    "topic": "Books & Authors",
-    "q_en": "Who is the author of the book 'The Trees of My Country: A Natural History of India in 50 Trees'?",
-    "q_ta": "'The Trees of My Country: A Natural History of India in 50 Trees' என்ற புத்தகத்தை எழுதியவர் யார்?",
-    "options_en": [
-      "T.R. Shankar Raman",
-      "Ramachandra Guha",
-      "Jairam Ramesh",
-      "Madhav Gadgil"
-    ],
-    "options_ta": [
-      "டி.ஆர். சங்கர் ராமன்",
-      "ராமச்சந்திர குகா",
-      "ஜெய்ராம் ரமேஷ்",
-      "மாதவ் காட்கில்"
-    ],
-    "correct": 0,
-    "exp_en": "'The Trees of My Country: A Natural History of India in 50 Trees' is authored by T.R. Shankar Raman.",
-    "exp_ta": "'The Trees of My Country: A Natural History of India in 50 Trees' என்ற நூலின் ஆசிரியர் டி.ஆர். சங்கர் ராமன் ஆவார்."
-  },
-  {
-    "topic": "Books & Authors",
-    "q_en": "The book titled 'Triumph of the Indian Republic: My Life, My Struggles' has been written by which former Indian President?",
-    "q_ta": "'Triumph of the Indian Republic: My Life, My Struggles' என்ற நூலை எழுதிய முன்னாள் இந்திய குடியரசுத் தலைவர் யார்?",
-    "options_en": [
-      "Ram Nath Kovind",
-      "Pranab Mukherjee",
-      "A.P.J. Abdul Kalam",
-      "K.R. Narayanan"
-    ],
-    "options_ta": [
-      "ராம் நாத் கோவிந்த்",
-      "பிரணாப் முகர்ஜி",
-      "ஏ.பி.ஜே. அப்துல் கலாம்",
-      "கே.ஆர். நாராயணன்"
-    ],
-    "correct": 0,
-    "exp_en": "Former President Ram Nath Kovind authored 'Triumph of the Indian Republic: My Life, My Struggles'.",
-    "exp_ta": "முன்னாள் குடியரசுத் தலைவர் ராம் நாத் கோவிந்த் 'Triumph of the Indian Republic: My Life, My Struggles' என்ற புத்தகத்தை எழுதியுள்ளார்."
-  },
-  {
-    "topic": "Books & Authors",
-    "q_en": "Who wrote the book 'China's Wars: The Politics and Diplomacy Behind Its Military Coercion'?",
-    "q_ta": "'China's Wars: The Politics and Diplomacy Behind Its Military Coercion' என்ற புத்தகத்தின் ஆசிரியர் யார்?",
-    "options_en": [
-      "Vijay Gokhale",
-      "Shivshankar Menon",
-      "S. Jaishankar",
-      "Nirupama Rao"
-    ],
-    "options_ta": [
-      "விஜய் கோகலே",
-      "சிவசங்கர் மேனன்",
-      "எஸ். ஜெய்சங்கர்",
-      "நிருபமா ராவ்"
-    ],
-    "correct": 0,
-    "exp_en": "Former Foreign Secretary Vijay Gokhale authored 'China's Wars: The Politics and Diplomacy Behind Its Military Coercion'.",
-    "exp_ta": "முன்னாள் வெளியுறவுச் செயலாளர் விஜய் கோகலே இந்நூலை இயற்றியுள்ளார்."
-  },
-  {
-    "topic": "Books & Authors",
-    "q_en": "The book 'Belonging: A Journey of Love' is authored by whom?",
-    "q_ta": "'Belonging: A Journey of Love' என்ற புத்தகத்தை எழுதியவர் யார்?",
-    "options_en": [
-      "Sonia Gandhi",
-      "Priyanka Gandhi Vadra",
-      "Sudha Murty",
-      "Jhumpa Lahiri"
-    ],
-    "options_ta": [
-      "சோனியா காந்தி",
-      "பிரியங்கா காந்தி வதேரா",
-      "சுதா மூர்த்தி",
-      "ஜூம்பா லஹிரி"
-    ],
-    "correct": 0,
-    "exp_en": "'Belonging: A Journey of Love' is authored by Sonia Gandhi.",
-    "exp_ta": "'Belonging: A Journey of Love' என்ற நூலை சோனியா காந்தி எழுதியுள்ளார்."
-  },
-  {
-    "topic": "Books & Authors",
-    "q_en": "Who is the author of the book 'Sankalp Se Siddhi Ka Modi Yug'?",
-    "q_ta": "'Sankalp Se Siddhi Ka Modi Yug' என்ற புத்தகத்தை எழுதியவர் யார்?",
-    "options_en": [
-      "Ghanshyam Tiwari",
-      "Y. Lakshmi Prasad",
-      "Uday Shankar",
-      "Asim Siddiqui"
-    ],
-    "options_ta": [
-      "கன்ஷ்யாம் திவாரி",
-      "ஒய். லட்சுமி பிரசாத்",
-      "உதய் சங்கர்",
-      "ஆசிம் சித்திகி"
-    ],
-    "correct": 0,
-    "exp_en": "'Sankalp Se Siddhi Ka Modi Yug' was written by Ghanshyam Tiwari.",
-    "exp_ta": "'Sankalp Se Siddhi Ka Modi Yug' என்ற புத்தகத்தை கன்ஷ்யாம் திவாரி எழுதியுள்ளார்."
-  },
-  {
-    "topic": "Appointments",
-    "q_en": "Who took charge as the Director General of the Geological Survey of India (GSI)?",
-    "q_ta": "இந்திய புவியியல் ஆய்வு மையத்தின் (GSI) புதிய தலைமை இயக்குநராகப் பொறுப்பேற்றவர் யார்?",
-    "options_en": [
-      "Varsha Ashok Aglawe",
-      "Sandeep Thareja",
-      "Manish Chadha",
-      "Govind Mohan"
-    ],
-    "options_ta": [
-      "வர்ஷா அசோக் அக்லாவே",
-      "சந்தீப் தரேஜா",
-      "மனிஷ் சாதா",
-      "கோவிந்த் மோகன்"
-    ],
-    "correct": 0,
-    "exp_en": "Varsha Ashok Aglawe took charge as the Director General of Geological Survey of India (GSI).",
-    "exp_ta": "இந்திய புவியியல் ஆய்வு மையத்தின் (GSI) தலைமை இயக்குநராக வர்ஷா அசோக் அக்லாவே நியமிக்கப்பட்டுள்ளார்."
-  },
-  {
-    "topic": "Appointments",
-    "q_en": "Who was appointed as the Union Cabinet Secretary of India?",
-    "q_ta": "இந்தியாவின் புதிய மத்திய அமைச்சரவைச் செயலாளராக (Union Cabinet Secretary) நியமிக்கப்பட்டவர் யார்?",
-    "options_en": [
-      "Dr. T.V. Somanathan",
-      "Govind Mohan",
-      "Rajiv Gauba",
-      "Ajay Kumar Bhalla"
-    ],
-    "options_ta": [
-      "டாக்டர் டி.வி. சோமநாதன்",
-      "கோவிந்த் மோகன்",
-      "ராஜீவ் கௌபா",
-      "அஜய் குமார் பல்லா"
-    ],
-    "correct": 0,
-    "exp_en": "Dr. T.V. Somanathan was appointed as the Union Cabinet Secretary of India.",
-    "exp_ta": "டாக்டர் டி.வி. சோமநாதன் இந்தியாவின் புதிய மத்திய அமைச்சரவைச் செயலாளராக நியமிக்கப்பட்டார்."
-  },
-  {
-    "topic": "Appointments",
-    "q_en": "Who has been appointed as the Union Home Secretary of India?",
-    "q_ta": "இந்தியாவின் புதிய மத்திய உள்துறைச் செயலாளராக (Union Home Secretary) நியமிக்கப்பட்டவர் யார்?",
-    "options_en": [
-      "Govind Mohan",
-      "Dr. T.V. Somanathan",
-      "Pradeep Rai",
-      "Manish Chadha"
-    ],
-    "options_ta": [
-      "கோவிந்த் மோகன்",
-      "டாக்டர் டி.வி. சோமநாதன்",
-      "பிரதீப் ராய்",
-      "மனிஷ் சாதா"
-    ],
-    "correct": 0,
-    "exp_en": "Govind Mohan was appointed as the Union Home Secretary.",
-    "exp_ta": "கோவிந்த் மோகன் மத்திய உள்துறைச் செயலாளராக நியமிக்கப்பட்டார்."
-  },
-  {
-    "topic": "Appointments",
-    "q_en": "Who became the First Woman Fighter Combat Leader (FCL) Course Qualifier in the Indian Air Force?",
-    "q_ta": "இந்திய விமானப்படையில் முதல் பெண் போர்முறைப் பிரிவுத் தலைவர் (FCL) தகுதி பெற்றவர் யார்?",
-    "options_en": [
-      "Squadron Leader Bhawana Kanth",
-      "Squadron Leader Avani Chaturvedi",
-      "Squadron Leader Mohana Singh",
-      "Squadron Leader Shiva Chauhan"
-    ],
-    "options_ta": [
-      "ஸ்குவாட்ரன் லீடர் பாவனா காந்த்",
-      "ஸ்குவாட்ரன் லீடர் அவனி சதுர்வேதி",
-      "ஸ்குவாட்ரன் லீடர் மோகனா சிங்",
-      "ஸ்குவாட்ரன் லீடர் சிவா சௌகான்"
-    ],
-    "correct": 0,
-    "exp_en": "Squadron Leader Bhawana Kanth became the first woman fighter combat leader (FCL) qualifier in the IAF.",
-    "exp_ta": "ஸ்குவாட்ரன் லீடர் பாவனா காந்த் இந்திய விமானப்படையில் எஃப்.சி.எல் (FCL) தகுதி பெற்ற முதல் பெண் அதிகாரி என்ற பெருமையைப் பெற்றார்."
-  },
-  {
-    "topic": "Appointments",
-    "q_en": "Who took over as the Director General Naval Operations (DGNO)?",
-    "q_ta": "கடற்படை செயல்பாடுகளுக்கான தலைமை இயக்குநராகப் (DGNO) பொறுப்பேற்றவர் யார்?",
-    "options_en": [
-      "Vice Admiral Manish Chadha",
-      "Air Marshal Sandeep Thareja",
-      "Vice Admiral Dinesh K Tripathi",
-      "Vice Admiral Sanjay Jasjit Singh"
-    ],
-    "options_ta": [
-      "வைஸ் அட்மிரல் மனிஷ் சாதா",
-      "ஏர் மார்ஷல் சந்தீப் தரேஜா",
-      "வைஸ் அட்மிரல் தினேஷ் கே திரிபாதி",
-      "வைஸ் அட்மிரல் சஞ்சய் ஜஸ்ஜித் சிங்"
-    ],
-    "correct": 0,
-    "exp_en": "Vice Admiral Manish Chadha assumed charge as Director General Naval Operations (DGNO).",
-    "exp_ta": "வைஸ் அட்மிரல் மனிஷ் சாதா கடற்படை செயல்பாடுகளுக்கான தலைமை இயக்குநராகப் (DGNO) பொறுப்பேற்றார்."
-  },
-  {
-    "topic": "Defence",
-    "q_en": "Which shipyard built and delivered 'ASW-SWC Mangrol' to the Indian Navy?",
-    "q_ta": "இந்தியக் கடற்படைக்கு 'ASW-SWC மங்க்ரோல்' போர்க்கப்பலைக் கட்டி வழங்கிய கப்பல் கட்டும் தளம் எது?",
-    "options_en": [
-      "Cochin Shipyard Limited (CSL)",
-      "Garden Reach Shipbuilders & Engineers (GRSE)",
-      "Mazagon Dock Shipbuilders Limited (MDL)",
-      "Goa Shipyard Limited (GSL)"
-    ],
-    "options_ta": [
-      "கொச்சின் ஷிப்யார்ட் லிமிடெட் (CSL)",
-      "கார்டன் ரீச் ஷிப்பில்டர்ஸ் (GRSE)",
-      "மசகான் டாக் ஷிப்பில்டர்ஸ் (MDL)",
-      "கோவா ஷிப்யார்ட் லிமிடெட் (GSL)"
-    ],
-    "correct": 0,
-    "exp_en": "ASW-SWC Mangrol was built and delivered by Cochin Shipyard Limited (CSL), Kochi.",
-    "exp_ta": "ASW-SWC மங்க்ரோல் கப்பல் கொச்சியில் உள்ள கொச்சின் ஷிப்யார்ட் லிமிடெட் (CSL) மூலம் கட்டி வழங்கப்பட்டது."
-  },
-  {
-    "topic": "Defence",
-    "q_en": "'Aravalli', a high-power helicopter engine, is being jointly developed by Hindustan Aeronautics Limited (HAL) and which foreign company?",
-    "q_ta": "'ஆரவல்லி' (Aravalli) அதிதிறன் கொண்ட ஹெலிகாப்டர் என்ஜின், HAL மற்றும் எந்த வெளிநாட்டு நிறுவனத்துடன் இணைந்து உருவாக்கப்படுகிறது?",
-    "options_en": [
-      "Safran Helicopter Engines (France)",
-      "Rolls-Royce (UK)",
-      "GE Aviation (USA)",
-      "Rosoboronexport (Russia)"
-    ],
-    "options_ta": [
-      "சஃப்ரான் ஹெலிகாப்டர் என்ஜின்ஸ் (பிரான்ஸ்)",
-      "ரோல்ஸ்-ராய்ஸ் (பிரிட்டன்)",
-      "ஜிஇ ஏவியேஷன் (அமெரிக்கா)",
-      "ரோசோபோரோன் எக்ஸ்போர்ட் (ரஷ்யா)"
-    ],
-    "correct": 0,
-    "exp_en": "HAL and Safran Helicopter Engines (France) are jointly developing the 'Aravalli' high-power helicopter engine (3,500-4,000 shp).",
-    "exp_ta": "HAL மற்றும் பிரான்சின் சஃப்ரான் நிறுவனம் இணைந்து 'ஆரவல்லி' ஹெலிகாப்டர் என்ஜினை உருவாக்குகின்றன."
-  },
-  {
-    "topic": "Defence",
-    "q_en": "Where was the 15th India-Thailand Maitree Exercise (MAITREE-XV) conducted?",
-    "q_ta": "15-வது இந்தியா-தாய்லாந்து 'மைத்ரீ' (MAITREE-XV) ராணுவப் பயிற்சி எங்கு நடைபெற்றது?",
-    "options_en": [
-      "Surat Thani, Thailand",
-      "Umroi, Meghalaya",
-      "Chiang Mai, Thailand",
-      "Jodhpur, Rajasthan"
-    ],
-    "options_ta": [
-      "சூரத் தானி, தாய்லாந்து",
-      "உம்ரோய், மேகாலயா",
-      "சியாங் மாய், தாய்லாந்து",
-      "ஜோத்பூர், ராஜஸ்தான்"
-    ],
-    "correct": 0,
-    "exp_en": "Exercise MAITREE-XV was held at Vibhavadi Rangsit Camp, Surat Thani, Thailand.",
-    "exp_ta": "மைத்ரீ-XV கூட்டுப் பயிற்சி தாய்லாந்தின் சூரத் தானியில் உள்ள விபாவதி ரங்சித் முகாமில் நடைபெற்றது."
-  },
-  {
-    "topic": "Defence",
-    "q_en": "What type of missile is 'Agni-4', which was successfully test-fired from Chandipur, Odisha?",
-    "q_ta": "ஒடிசாவின் சந்திப்பூரில் வெற்றிகரமாகச் சோதிக்கப்பட்ட 'அக்னி-4' ஏவுகணை எந்த வகையைச் சேர்ந்தது?",
-    "options_en": [
-      "Medium-Range Surface-to-Surface Ballistic Missile",
-      "Short-Range Surface-to-Air Missile",
-      "Submarine-Launched Cruise Missile",
-      "Long-Range Anti-Ship Missile"
-    ],
-    "options_ta": [
-      "நடுத்தர தூர தரை-தரை பாலிஸ்டிக் ஏவுகணை",
-      "குறுகிய தூர தரை-வான் ஏவுகணை",
-      "நீர்மூழ்கி கப்பல் வழி ஏவப்படும் ஏவுகணை",
-      "நீண்ட தூர கப்பல் எதிர்ப்பு ஏவுகணை"
-    ],
-    "correct": 0,
-    "exp_en": "Agni-4 is an Intermediate/Medium-range surface-to-surface ballistic missile with a range of approx 4,000 km.",
-    "exp_ta": "அக்னி-4 என்பது சுமார் 4,000 கி.மீ தூரம் பாயும் நடுத்தர தூர தரை-தரை பாலிஸ்டிக் ஏவுகணையாகும்."
-  },
-  {
-    "topic": "Defence",
-    "q_en": "Where did the Indian Air Force conduct the specialised counter-drone helicopter drill named 'Exercise ROTOR CLAP III'?",
-    "q_ta": "ட்ரோன் எதிர்ப்பு நடவடிக்கைகளுக்கான 'ROTOR CLAP III' என்ற சிறப்பு ஹெலிகாப்டர் பயிற்சியை இந்திய விமானப்படை எங்கு நடத்தியது?",
-    "options_en": [
-      "Pokhran Field Firing Range, Rajasthan",
-      "Kargil, Ladakh",
-      "Bakloh, Himachal Pradesh",
-      "Kalaikunda, West Bengal"
-    ],
-    "options_ta": [
-      "பொக்ரான் கள துப்பாக்கிச் சூடு தளம், ராஜஸ்தான்",
-      "கார்கில், லடாக்",
-      "பக்லோ, இமாச்சலப் பிரதேசம்",
-      "கலைகுண்டா, மேற்கு வங்கம்"
-    ],
-    "correct": 0,
-    "exp_en": "Exercise ROTOR CLAP III was conducted by IAF at Pokhran Field Firing Range in Jaisalmer district, Rajasthan.",
-    "exp_ta": "இந்திய விமானப்படை 'ROTOR CLAP III' பயிற்சியை ராஜஸ்தானின் ஜெய்சல்மேர் மாவட்டத்திலுள்ள பொக்ரானில் நடத்தியது."
-  },
-  {
-    "topic": "Obituaries",
-    "q_en": "Dr. D.Y. Patil, who passed away, served as the Governor of which Indian state from 2012 to 2014?",
-    "q_ta": "காலமான டாக்டர் டி.ஒய். பாட்டீல், 2012 முதல் 2014 வரை எந்த இந்திய மாநிலத்தின் ஆளுநராகப் பணியாற்றினார்?",
-    "options_en": [
-      "West Bengal",
-      "Maharashtra",
-      "Bihar",
-      "Odisha"
-    ],
-    "options_ta": [
-      "மேற்கு வங்கம்",
-      "மகாராஷ்டிரா",
-      "பீகார்",
-      "ஒடிசா"
-    ],
-    "correct": 0,
-    "exp_en": "Dr. D.Y. Patil was a senior Congress leader, educationist from Maharashtra, and former Governor of West Bengal (2012-2014).",
-    "exp_ta": "டாக்டர் டி.ஒய். பாட்டீல் மேற்கு வங்கத்தின் முன்னாள் ஆளுநராக (2012-2014) பணியாற்றிய மூத்த அரசியல் தலைவர் மற்றும் கல்வியாளர் ஆவார்."
-  },
-  {
-    "topic": "Obituaries",
-    "q_en": "Renowned mountaineer Nirmal Purja, who set records climbing all 14 peaks above 8,000 meters, belonged to which country?",
-    "q_ta": "8,000 மீட்டருக்கு அதிகமான 14 சிகரங்களையும் ஏறி சாதனை படைத்த பிரபல மலையேற்ற வீரர் நிர்மல் புர்ஜா எந்த நாட்டைச் சேர்ந்தவர்?",
-    "options_en": [
-      "Nepal",
-      "Bhutan",
-      "India",
-      "Tibet"
-    ],
-    "options_ta": [
-      "நேபாளம்",
-      "பூட்டான்",
-      "இந்தியா",
-      "திபெத்"
-    ],
-    "correct": 0,
-    "exp_en": "Nirmal Purja (Nimsdai) was a renowned Nepalese mountaineer and former British Gurkha soldier.",
-    "exp_ta": "நிர்மல் புர்ஜா நேபாளத்தைச் சேர்ந்த உலகப் புகழ்பெற்ற மலையேற்ற வீரர் மற்றும் முன்னாள் பிரிட்டிஷ் கூர்கா படைவீரர் ஆவார்."
-  },
-  {
-    "topic": "Obituaries",
-    "q_en": "Justice M. S. Liberhan, who passed away, famously headed the inquiry commission associated with which historical event?",
-    "q_ta": "காலமான நீதிபதி எம். எஸ். லிபர்ஹான், எந்த வரலாற்று நிகழ்வு தொடர்பான விசாரணைக் குழுவின் தலைவராகப் பணியாற்றினார்?",
-    "options_en": [
-      "1992 Babri Masjid Demolition",
-      "1984 Anti-Sikh Riots",
-      "2002 Godhra Incident",
-      "Mumbai 26/11 Attacks"
-    ],
-    "options_ta": [
-      "1992 பாபர் மசூதி இடிப்பு",
-      "1984 சீக்கியர் எதிர்ப்பு கலவரம்",
-      "2002 கோத்ரா சம்பவம்",
-      "மும்பை 26/11 தாக்குதல்"
-    ],
-    "correct": 0,
-    "exp_en": "Justice M. S. Liberhan headed the Liberhan Commission that investigated the 1992 Babri Masjid demolition.",
-    "exp_ta": "நீதிபதி எம். எஸ். லிபர்ஹான் 1992 பாபர் மசூதி இடிப்பு வழக்கை விசாரித்த லிபர்ஹான் ஆணையத்தின் தலைவராக இருந்தார்."
-  },
-  {
-    "topic": "Obituaries",
-    "q_en": "Dr. D.Y. Patil, who received the Padma Shri in 1991, was widely known in Maharashtra by which honorific title?",
-    "q_ta": "1991-இல் பத்மஸ்ரீ விருது பெற்ற டாக்டர் டி.ஒய். பாட்டீல் மகாராஷ்டிராவில் எந்தப் பட்டப் பெயரால் அழைக்கப்பட்டார்?",
-    "options_en": [
-      "Shikshanmaharshi",
-      "Loknayak",
-      "Karmveer",
-      "Rashtrasant"
-    ],
-    "options_ta": [
-      "ஷிக்ஷன்மகரிஷி (Shikshanmaharshi)",
-      "லோக்நாயகர்",
-      "கர்மவீரர்",
-      "ராஷ்டிரசந்த்"
-    ],
-    "correct": 0,
-    "exp_en": "He was widely known in Maharashtra as 'Shikshanmaharshi' (visionary educationist).",
-    "exp_ta": "கல்வித்துறையில் ஆற்றிய பணிகளுக்காக இவர் மகாராஷ்டிராவில் 'ஷிக்ஷன்மகரிஷி' (கல்வி ஞானி) என்று போற்றப்பட்டார்."
-  },
-  {
-    "topic": "Obituaries",
-    "q_en": "Eminent Marxist historian Sumit Sarkar, who passed away, is best known for authoring which influential historical work?",
-    "q_ta": "காலமான பிரபல மார்க்சிய வரலாற்று ஆய்வாளர் சுமித் சர்க்கார் இயற்றிய புகழ்பெற்ற வரலாற்று நூல் எது?",
-    "options_en": [
-      "The Swadeshi Movement in Bengal, 1903–1908",
-      "India's Struggle for Independence",
-      "Discovery of India",
-      "An Advanced History of India"
-    ],
-    "options_ta": [
-      "The Swadeshi Movement in Bengal, 1903–1908",
-      "India's Struggle for Independence",
-      "Discovery of India",
-      "An Advanced History of India"
-    ],
-    "correct": 0,
-    "exp_en": "Sumit Sarkar was an eminent historian who authored landmark books including 'The Swadeshi Movement in Bengal, 1903–1908' and 'Modern India'.",
-    "exp_ta": "சுமித் சர்க்கார் நவீன இந்திய வரலாற்றின் தலைசிறந்த அறிஞர் ஆவார்; 'The Swadeshi Movement in Bengal' உள்ளிட்ட முக்கிய நூல்களை எழுதியுள்ளார்."
-  },
-  {
-    "topic": "National Schemes",
-    "q_en": "What is the total financial outlay approved for the 'GOBARdhan' National Circular Bioenergy Scheme?",
-    "q_ta": "'கோபர்தன்' (GOBARdhan) தேசிய சுழற்சி உயிர் எரிசக்தி திட்டத்திற்கு அங்கீகரிக்கப்பட்ட மொத்த நிதி ஒதுக்கீடு எவ்வளவு?",
-    "options_en": [
-      "₹23,731 crore",
-      "₹18,500 crore",
-      "₹15,070 crore",
-      "₹31,500 crore"
-    ],
-    "options_ta": [
-      "₹23,731 கோடி",
-      "₹18,500 கோடி",
-      "₹15,070 கோடி",
-      "₹31,500 கோடி"
-    ],
-    "correct": 0,
-    "exp_en": "The total allocation for the GOBARdhan National Circular Bioenergy Scheme is ₹23,731 crore.",
-    "exp_ta": "கோபர்தன் தேசிய சுழற்சி உயிர் எரிசக்தி திட்டத்தின் மொத்த நிதி ஒதுக்கீடு ₹23,731 கோடியாகும்."
-  },
-  {
-    "topic": "National Schemes",
-    "q_en": "Under the Pradhan Mantri Surya Sarovar Yojana (PM-SSY), what is the targeted floating solar PV capacity to be developed?",
-    "q_ta": "பிரதம மந்திரி சூர்ய சரோவர் யோஜனா (PM-SSY) திட்டத்தின் கீழ் மிதக்கும் சூரிய மின்சக்தித் திறன் இலக்கு என்ன?",
-    "options_en": [
-      "5,000 MW FSPV + 10,000 MWh storage",
-      "2,000 MW FSPV + 5,000 MWh storage",
-      "10,000 MW FSPV + 20,000 MWh storage",
-      "4,000 MW FSPV + 8,000 MWh storage"
-    ],
-    "options_ta": [
-      "5,000 MW FSPV + 10,000 MWh சேமிப்பு திறன்",
-      "2,000 MW FSPV + 5,000 MWh சேமிப்பு திறன்",
-      "10,000 MW FSPV + 20,000 MWh சேமிப்பு திறன்",
-      "4,000 MW FSPV + 8,000 MWh சேமிப்பு திறன்"
-    ],
-    "correct": 0,
-    "exp_en": "Target is 5,000 MW Floating Solar PV with a minimum of 10,000 MWh Energy Storage Systems.",
-    "exp_ta": "இத்திட்டத்தின் இலக்கு 5,000 MW மிதக்கும் சோலார் பிவி மற்றும் குறைந்தபட்சம் 10,000 MWh மின்கல சேமிப்பு அமைப்பாகும்."
-  },
-  {
-    "topic": "National Schemes",
-    "q_en": "For how many additional years has the PM-KISAN scheme been extended beyond FY 2025-26?",
-    "q_ta": "PM-கிசான் திட்டம் 2025-26 நிதியாண்டுக்கு அப்பால் மேலும் எத்தனை ஆண்டுகளுக்கு நீட்டிக்கப்பட்டுள்ளது?",
-    "options_en": [
-      "5 Years (till FY 2030-31)",
-      "3 Years (till FY 2028-29)",
-      "4 Years (till FY 2029-30)",
-      "2 Years (till FY 2027-28)"
-    ],
-    "options_ta": [
-      "5 ஆண்டுகள் (2030-31 நிதியாண்டு வரை)",
-      "3 ஆண்டுகள் (2028-29 நிதியாண்டு வரை)",
-      "4 ஆண்டுகள் (2029-30 நிதியாண்டு வரை)",
-      "2 ஆண்டுகள் (2027-28 நிதியாண்டு வரை)"
-    ],
-    "correct": 0,
-    "exp_en": "PM-KISAN scheme has been extended for 5 years from FY 2026-27 to FY 2030-31 with an outlay of ₹3.15 lakh crore.",
-    "exp_ta": "PM-கிசான் திட்டம் 2026-27 முதல் 2030-31 வரை மேலும் 5 ஆண்டுகளுக்கு ₹3.15 லட்சம் கோடி மதிப்பீட்டில் நீட்டிக்கப்பட்டுள்ளது."
-  },
-  {
-    "topic": "National Schemes",
-    "q_en": "What is 'Jago AI Assistant' launched by the Ministry of Tribal Affairs?",
-    "q_ta": "மத்திய பழங்குடியினர் விவகார அமைச்சகத்தால் தொடங்கப்பட்ட 'ஜாகோ AI' (Jago AI) எதனுடன் தொடர்புடையது?",
-    "options_en": [
-      "AI-powered conversational assistant for tribal welfare schemes",
-      "A portal for direct selling of tribal handicrafts",
-      "An automated satellite alert system for forest fires",
-      "A digital land surveying tool for tribal belts"
-    ],
-    "options_ta": [
-      "பழங்குடியினர் நலத்திட்டங்களுக்கான செயற்கை நுண்ணறிவு உரையாடல் தளம்",
-      "பழங்குடியின கைவினைப் பொருட்களுக்கான விற்பனை தளம்",
-      "காட்டுத்தீக்கான தானியங்கி செயற்கைக்கோள் எச்சரிக்கை அமைப்பு",
-      "பழங்குடியினர் நில அளவீட்டு டிஜிட்டல் தளம்"
-    ],
-    "correct": 0,
-    "exp_en": "Jago AI is an AI-powered conversational assistant to expand access to tribal welfare schemes and programmes in English and Hindi.",
-    "exp_ta": "ஜாகோ AI என்பது பழங்குடியினர் நலத்திட்ட தகவல்களை மக்கள் எளிதில் பெற உதவும் செயற்கை நுண்ணறிவு குரல்/உரை உதவியாளர் செயலியாகும்."
-  },
-  {
-    "topic": "National Schemes",
-    "q_en": "According to the Legal Metrology (Indian Standard Time) Rules 2026, within how many days does the mandatory IST adoption take effect after publication?",
-    "q_ta": "இந்திய நேர நிர்ணய (IST) சட்ட அளவியல் விதிகள் 2026-இன் படி, அதிகாரப்பூர்வ அரசிதழில் வெளியான எத்தனை நாட்களுக்குள் IST பயன்பாடு கட்டாயமாகிறது?",
-    "options_en": [
-      "180 days",
-      "90 days",
-      "120 days",
-      "365 days"
-    ],
-    "options_ta": [
-      "180 நாட்கள்",
-      "90 நாட்கள்",
-      "120 நாட்கள்",
-      "365 நாட்கள்"
-    ],
-    "correct": 0,
-    "exp_en": "It takes effect 180 days after publication in the Official Gazette to establish IST as the mandatory reference.",
-    "exp_ta": "அரசிதழில் வெளியிடப்பட்ட 180 நாட்களுக்குப் பிறகு வங்கி, பாதுகாப்பு, தகவல் தொடர்பு ஆகியவற்றில் IST கட்டாயமாக்கப்படுகிறது."
-  },
-  {
-    "topic": "State News",
-    "q_en": "Where is India's first large-scale Biopolymer Plant being set up by Balrampur Chini Mills Ltd?",
-    "q_ta": "பல்ராம்பூர் சின்னி மில்ஸ் நிறுவனத்தால் இந்தியாவின் முதல் பெரிய அளவிலான பயோபாலிமர் ஆலை எங்கு அமைக்கப்படுகிறது?",
-    "options_en": [
-      "Lakhimpur Kheri, Uttar Pradesh",
-      "Gorakhpur, Uttar Pradesh",
-      "Pune, Maharashtra",
-      "Surat, Gujarat"
-    ],
-    "options_ta": [
-      "லக்கிம்பூர் கேரி, உத்தரப் பிரதேசம்",
-      "கோரக்பூர், உத்தரப் பிரதேசம்",
-      "புனே, மகாராஷ்டிரா",
-      "சூரத், குஜராத்"
-    ],
-    "correct": 0,
-    "exp_en": "India's first large-scale biopolymer plant (PLA bioplastic) is being set up in Lakhimpur Kheri, Uttar Pradesh.",
-    "exp_ta": "இந்தியாவின் முதல் பெரிய அளவிலான பாலிலாக்டிக் அமிலம் (PLA) பயோபாலிமர் ஆலை உ.பி.யின் லக்கிம்பூர் கேரியில் அமைக்கப்படுகிறது."
-  },
-  {
-    "topic": "State News",
-    "q_en": "Which state government launched the disaster response team named 'Arjun Bahini', modelled on NDRF?",
-    "q_ta": "NDRF மாதிரி கட்டமைப்பில் 'அர்ஜுன் வாகினி' (Arjun Bahini) என்ற பேரிடர் மீட்புப் படையை அமைத்த மாநில அரசு எது?",
-    "options_en": [
-      "West Bengal",
-      "Odisha",
-      "Assam",
-      "Bihar"
-    ],
-    "options_ta": [
-      "மேற்கு வங்கம்",
-      "ஒடிசா",
-      "அசாம்",
-      "பீகார்"
-    ],
-    "correct": 0,
-    "exp_en": "The West Bengal government launched 'Arjun Bahini' for disaster rescue with 200 personnel and 20% Agniveer reservation.",
-    "exp_ta": "மேற்கு வங்க அரசு பேரிடர் மேலாண்மைக்காக அக்னிவீரர்களுக்கு 20% இடஒதுக்கீட்டுடன் 'அர்ஜுன் வாகினி' படையை அமைத்துள்ளது."
-  },
-  {
-    "topic": "State News",
-    "q_en": "Where was the 'Hutatma Smruti Smarak' inaugurated in August 2026 to honor Goa Liberation Movement satyagrahis?",
-    "q_ta": "கோவா விடுதலைப் போராட்ட சத்தியாகிரகிகளை கௌரவிக்கும் வகையில் ஆகஸ்ட் 2026-இல் 'ஹுதாத்மா ஸ்மிருதி ஸ்மாரக்' எங்கு திறக்கப்பட்டது?",
-    "options_en": [
-      "Patradevi, Goa",
-      "Panaji, Goa",
-      "Margao, Goa",
-      "Vasco da Gama, Goa"
-    ],
-    "options_ta": [
-      "பத்ராதேவி, கோவா",
-      "பனாஜி, கோவா",
-      "மட்காவ், கோவா",
-      "வாஸ்கோ ட காமா, கோவா"
-    ],
-    "correct": 0,
-    "exp_en": "Defence Minister Rajnath Singh inaugurated Hutatma Smruti Smarak at Patradevi, Goa.",
-    "exp_ta": "போர்ச்சுகீசிய ஆட்சிக்கு எதிரான தியாகிகளை போற்றும் 'ஹுதாத்மா ஸ்மிருதி ஸ்மாரக்' கோவாவின் பத்ராதேவியில் திறக்கப்பட்டது."
-  },
-  {
-    "topic": "State News",
-    "q_en": "Which major Indian port became the first to be accredited with the ISO 50001:2018 Energy Management System certification?",
-    "q_ta": "ISO 50001:2018 எரிசக்தி மேலாண்மை சான்றிதழைப் பெற்ற முதல் இந்திய துறைமுகம் எது?",
-    "options_en": [
-      "V.O. Chidambaranar Port, Thoothukudi",
-      "Jawaharlal Nehru Port, Mumbai",
-      "Cochin Port, Kerala",
-      "Chennai Port, Tamil Nadu"
-    ],
-    "options_ta": [
-      "வ.உ.சிதம்பரனார் துறைமுகம், தூத்துக்குடி",
-      "ஜவஹர்லால் நேரு துறைமுகம், மும்பை",
-      "கொச்சின் துறைமுகம், கேரளா",
-      "சென்னை துறைமுகம், தமிழ்நாடு"
-    ],
-    "correct": 0,
-    "exp_en": "V.O. Chidambaranar Port in Thoothukudi, Tamil Nadu became India's first port accredited with ISO 50001:2018.",
-    "exp_ta": "தூத்துக்குடியில் உள்ள வ.உ.சிதம்பரனார் துறைமுகம் ISO 50001:2018 சான்றிதழ் பெற்ற இந்தியாவின் முதல் துறைமுகமாகும்."
-  },
-  {
-    "topic": "State News",
-    "q_en": "India's first Virtual Zoo featuring Virtual Jungle Safari was inaugurated in which city?",
-    "q_ta": "இந்தியாவின் முதல் மெய்நிகர் விலங்கியல் பூங்கா (Virtual Zoo) எந்த நகரில் தொடங்கப்பட்டது?",
-    "options_en": [
-      "Indore, Madhya Pradesh",
-      "Bhopal, Madhya Pradesh",
-      "Jaipur, Rajasthan",
-      "Lucknow, Uttar Pradesh"
-    ],
-    "options_ta": [
-      "இந்தூர், மத்தியப் பிரதேசம்",
-      "போபால், மத்தியப் பிரதேசம்",
-      "ஜெய்ப்பூர், ராஜஸ்தான்",
-      "லக்னோ, உத்தரப் பிரதேசம்"
-    ],
-    "correct": 0,
-    "exp_en": "India's first Virtual Zoo was inaugurated at Kamla Nehru Zoological Garden in Indore, MP.",
-    "exp_ta": "மத்தியப் பிரதேச மாநிலம் இந்தூரில் உள்ள கமலா நேரு உயிரியல் பூங்காவில் இந்தியாவின் முதல் மெய்நிகர் விலங்கியல் பூங்கா அமைக்கப்பட்டது."
-  },
-  {
-    "topic": "Environment",
-    "q_en": "Which lake was designated as Arunachal Pradesh's 1st Ramsar Site and India's 101st Ramsar Site?",
-    "q_ta": "அருணாச்சலப் பிரதேசத்தின் 1-வது மற்றும் இந்தியாவின் 101-வது ராம்சார் தளமாக அறிவிக்கப்பட்ட ஏரி எது?",
-    "options_en": [
-      "Glaw Lake",
-      "Sangetsar Lake",
-      "Madhuri Lake",
-      "Mehao Lake"
-    ],
-    "options_ta": [
-      "க்ளா ஏரி (Glaw Lake)",
-      "சங்கெட்சர் ஏரி",
-      "மாதுரி ஏரி",
-      "மெஹாவோ ஏரி"
-    ],
-    "correct": 0,
-    "exp_en": "Glaw Lake in Lohit district within Kamlang Tiger Reserve became Arunachal Pradesh's 1st Ramsar Site and India's 101st.",
-    "exp_ta": "கம்லாங் புலிகள் காப்பகத்திற்குள் அமைந்துள்ள க்ளா ஏரி அருணாச்சலப் பிரதேசத்தின் முதல் மற்றும் இந்தியாவின் 101-வது ராம்சார் தளமாகும்."
-  },
-  {
-    "topic": "Environment",
-    "q_en": "According to the 16th Asiatic Lion Population Estimation (2025), what is the total lion population recorded in Gujarat?",
-    "q_ta": "16-வது ஆசிய சிங்கங்கள் கணக்கெடுப்பின்படி (2025), குஜராத்தில் பதிவான மொத்த சிங்கங்களின் எண்ணிக்கை என்ன?",
-    "options_en": [
-      "891",
-      "674",
-      "523",
-      "750"
-    ],
-    "options_ta": [
-      "891",
-      "674",
-      "523",
-      "750"
-    ],
-    "correct": 0,
-    "exp_en": "891 Asiatic lions were recorded in Gujarat in 2025, up from 674 in 2020.",
-    "exp_ta": "2025 கணக்கெடுப்பின்படி குஜராத்தில் ஆசிய சிங்கங்களின் எண்ணிக்கை 891 ஆக உயர்ந்துள்ளது (2020-இல் 674 ஆக இருந்தது)."
-  },
-  {
-    "topic": "Environment",
-    "q_en": "Which two climate events were newly added by the Ministry of Home Affairs to the list of Notified Natural Calamities under SDRF/NDRF?",
-    "q_ta": "SDRF/NDRF வழிகாட்டுதலின் கீழ் பேரிடர்களாக மத்திய உள்துறை அமைச்சகத்தால் புதிதாக சேர்க்கப்பட்ட இரு நிகழ்வுகள் எவை?",
-    "options_en": [
-      "Heatwaves and Lightning",
-      "Glacial Lake Outburst and Avalanches",
-      "Cold Waves and Frost",
-      "Forest Fires and Cloudbursts"
-    ],
-    "options_ta": [
-      "வெப்ப அலை மற்றும் மின்னல் (Heatwaves and Lightning)",
-      "பனிப்பாறை ஏரி உடைப்பு மற்றும் हिमச்சரிவு",
-      "குளிர் அலை மற்றும் உறைபனி",
-      "காட்டுத்தீ மற்றும் மேகவெடிப்பு"
-    ],
-    "correct": 0,
-    "exp_en": "On the recommendation of the 16th Finance Commission, Heatwaves and Lightning were added to SDRF/NDRF notified natural calamities.",
-    "exp_ta": "16-வது நிதி ஆணையத்தின் பரிந்துரைப்படி வெப்ப அலை மற்றும் மின்னல் ஆகியவை அறிவிக்கப்பட்ட இயற்கை பேரிடர்களாகச் சேர்க்கப்பட்டுள்ளன."
-  },
-  {
-    "topic": "Environment",
-    "q_en": "'Colletes bhutanicus', recorded for the first time in India from Tawang, belongs to which category of species?",
-    "q_ta": "தவாங்கில் இந்தியாவில் முதன்முறையாகக் கண்டறியப்பட்ட 'கொல்லெட்ஸ் பூட்டானிகஸ்' (Colletes bhutanicus) எந்த வகை உயிரினமாகும்?",
-    "options_en": [
-      "Solitary Bee",
-      "Butterfly",
-      "Freshwater Crab",
-      "Orchid"
-    ],
-    "options_ta": [
-      "தனித்த தேனீ இனம் (Solitary Bee)",
-      "வண்ணத்துப்பூச்சி",
-      "நன்னீர் நண்டு",
-      "ஆர்க்கிட் தாவரம்"
-    ],
-    "correct": 0,
-    "exp_en": "Colletes bhutanicus is a solitary bee belonging to family Colletidae, discovered in Tawang, Arunachal Pradesh.",
-    "exp_ta": "கொல்லெட்ஸ் பூட்டானிகஸ் என்பது தவாங்கில் கண்டுபிடிக்கப்பட்ட மகரந்தச் சேர்க்கை செய்யும் அரிய வகை தனித்த தேனீ ஆகும்."
-  },
-  {
-    "topic": "Environment",
-    "q_en": "Which state has planned to translocate Wild Water Buffaloes from Assam to revive their declining population?",
-    "q_ta": "காட்டு நீர் எருமைகளின் (Wild Water Buffaloes) எண்ணிக்கையை அதிகரிக்க அசாமில் இருந்து கொண்டுவர திட்டமிட்டுள்ள மாநிலம் எது?",
-    "options_en": [
-      "Chhattisgarh",
-      "Madhya Pradesh",
-      "Jharkhand",
-      "Odisha"
-    ],
-    "options_ta": [
-      "சத்தீஸ்கர்",
-      "மத்தியப் பிரதேசம்",
-      "ஜார்க்கண்ட்",
-      "ஒடிசா"
-    ],
-    "correct": 0,
-    "exp_en": "Chhattisgarh decided to translocate wild buffaloes (its State Animal) from Assam to Udanti-Sitanadi and Pamed sanctuaries.",
-    "exp_ta": "சத்தீஸ்கர் மாநிலம் தனது மாநில விலங்கான காட்டு நீர் எருமைகளை அசாமில் இருந்து இடமாற்றம் செய்து பாதுகாக்க திட்டமிட்டுள்ளது."
-  },
-  {
-    "topic": "Science & Tech",
-    "q_en": "Which space agency is developing the 'Nancy Grace Roman Space Telescope'?",
-    "q_ta": "'நான்சி கிரேஸ் ரோமன் விண்வெளி தொலைநோக்கியை' (Nancy Grace Roman Space Telescope) உருவாக்கும் விண்வெளி நிறுவனம் எது?",
-    "options_en": [
-      "NASA",
-      "ISRO",
-      "ESA",
-      "JAXA"
-    ],
-    "options_ta": [
-      "நாசா (NASA)",
-      "இஸ்ரோ (ISRO)",
-      "ஐரோப்பிய விண்வெளி நிறுவனம் (ESA)",
-      "ஜாக்சா (JAXA)"
-    ],
-    "correct": 0,
-    "exp_en": "Nancy Grace Roman Space Telescope is being developed by NASA to study dark energy, dark matter, and exoplanets.",
-    "exp_ta": "நாசா (NASA) இருண்ட ஆற்றல், கரும்பொருள் மற்றும் புறக்கோள்களை ஆய்வு செய்ய நான்சி கிரேஸ் ரோமன் தொலைநோக்கியை உருவாக்குகிறது."
-  },
-  {
-    "topic": "Science & Tech",
-    "q_en": "Which launch vehicle will carry ISRO's GISAT-1A (EOS-05) advanced geo-imaging satellite?",
-    "q_ta": "இஸ்ரோவின் GISAT-1A (EOS-05) புவி-படமாக்கல் செயற்கைக்கோளை விண்ணில் செலுத்தவுள்ள ராக்கெட் எது?",
-    "options_en": [
-      "GSLV Mk-II (Flight F17)",
-      "LVM3 M4",
-      "PSLV-C58",
-      "SSLV-D3"
-    ],
-    "options_ta": [
-      "GSLV Mk-II (Flight F17)",
-      "LVM3 M4",
-      "PSLV-C58",
-      "SSLV-D3"
-    ],
-    "correct": 0,
-    "exp_en": "GISAT-1A (EOS-05) is slated for launch aboard ISRO's GSLV Mk-II (Flight F17) into Geostationary Orbit.",
-    "exp_ta": "இஸ்ரோவின் GISAT-1A (EOS-05) செயற்கைக்கோள் GSLV Mk-II (விமானம் F17) ராக்கெட் மூலம் புவிநிலை சுற்றுப்பாதையில் ஏவப்படவுள்ளது."
-  },
-  {
-    "topic": "Science & Tech",
-    "q_en": "'SraVaani', an AI-powered speech recognition tool for Indian languages, has been developed by which premier institution?",
-    "q_ta": "இந்திய மொழிகளுக்கான 'ஸ்ரவாணி' (SraVaani) AI பேச்சு அங்கீகாரத் தொழில்நுட்பத்தை உருவாக்கிய முதன்மை கல்வி நிறுவனம் எது?",
-    "options_en": [
-      "IISc Bengaluru (SPIRE Lab)",
-      "IIT Madras",
-      "IIT Bombay",
-      "IIT Delhi"
-    ],
-    "options_ta": [
-      "ஐ.ஐ.எஸ்சி பெங்களூரு (SPIRE Lab)",
-      "ஐ.ஐ.டி மெட்ராஸ்",
-      "ஐ.ஐ.டி பம்பாய்",
-      "ஐ.ஐ.டி டெல்லி"
-    ],
-    "correct": 0,
-    "exp_en": "SraVaani was developed by IISc Bengaluru's SPIRE Lab in collaboration with ARTPARK and Google.",
-    "exp_ta": "ஸ்ரவாணி (SraVaani) மாடலை ஐ.ஐ.எஸ்சி பெங்களூருவின் ஸ்பைர் ஆய்வகம் ஆர்ட்பார்க் மற்றும் கூகுளுடன் இணைந்து உருவாக்கியது."
-  },
-  {
-    "topic": "Science & Tech",
-    "q_en": "What is 'S301', which gained prominence in astrophysical studies near Sagittarius A*?",
-    "q_ta": "விண்வெளி ஆய்வில் சாகிட்டேரியஸ் ஏ* அருகில் கண்டறியப்பட்ட 'S301' என்பது எதைக் குறிக்கிறது?",
-    "options_en": [
-      "A fast-moving star orbiting the supermassive black hole",
-      "A newly discovered exoplanet with water vapour",
-      "An interstellar comet passing through the solar system",
-      "A neutron star emitting regular gamma-ray bursts"
-    ],
-    "options_ta": [
-      "மீப்பெரும் கருந்துளையை அதிவேகமாகச் சுற்றிவரும் விண்மீன்",
-      "நீராவி கண்டறியப்பட்ட புதிய புறக்கோள்",
-      "சூரிய குடும்பத்தைக் கடக்கும் விண்மீன்களிடை வால்மீன்",
-      "காமா கதிர்களை வெளியிடும் நியூட்ரான் விண்மீன்"
-    ],
-    "correct": 0,
-    "exp_en": "S301 is one of the fastest-moving stars discovered near the supermassive black hole Sagittarius A* in the Milky Way.",
-    "exp_ta": "S301 என்பது பால்வெளி மண்டலத்தின் நடுவே உள்ள சாகிட்டேரியஸ் ஏ* கருந்துளையை மிக வேகமாகச் சுற்றிவரும் விண்மீனாகும்."
-  },
-  {
-    "topic": "Science & Tech",
-    "q_en": "Which CSIR institute developed and delivered the high-precision Beam Catcher units for the FAIR project in Germany?",
-    "q_ta": "ஜெர்மனியின் FAIR திட்டத்திற்கான அதிதுல்லிய பீம் கேட்சர் (Beam Catcher) கருவிகளை உருவாக்கி வழங்கிய CSIR நிறுவனம் எது?",
-    "options_en": [
-      "CSIR-CMERI, Durgapur",
-      "CSIR-NPL, New Delhi",
-      "CSIR-CGCRI, Kolkata",
-      "CSIR-NAL, Bengaluru"
-    ],
-    "options_ta": [
-      "CSIR-CMERI, துர்காபூர்",
-      "CSIR-NPL, புது தில்லி",
-      "CSIR-CGCRI, கொல்கத்தா",
-      "CSIR-NAL, பெங்களூரு"
-    ],
-    "correct": 0,
-    "exp_en": "CSIR-Central Mechanical Engineering Research Institute (CMERI), Durgapur manufactured and delivered the Beam Catcher units.",
-    "exp_ta": "துர்காபூரில் உள்ள CSIR-மத்திய மெக்கானிக்கல் பொறியியல் ஆராய்ச்சி நிறுவனம் (CMERI) இதனை தயாரித்து வழங்கியது."
-  },
-  {
-    "topic": "Awards & Honours",
-    "q_en": "Who became the first Indian woman to receive the prestigious COSPAR Vikram Sarabhai Medal in 2026?",
-    "q_ta": "2026-ஆம் ஆண்டில் மதிப்புமிக்க COSPAR விக்ரம் சாராபாய் பதக்கத்தைப் பெற்ற முதல் இந்திய பெண் யார்?",
-    "options_en": [
-      "Dr. Annapurni Subramaniam",
-      "Tessy Thomas",
-      "Ritu Karidhal",
-      "Nigar Shaji"
-    ],
-    "options_ta": [
-      "டாக்டர் அன்னபூர்ணி சுப்பிரமணியம்",
-      "டெஸ்ஸி தாமஸ்",
-      "ரிது கரிதால்",
-      "நிகார் ஷாஜி"
-    ],
-    "correct": 0,
-    "exp_en": "Astrophysicist Dr. Annapurni Subramaniam, Director of IIA Bengaluru, became the first Indian woman to win the COSPAR Vikram Sarabhai Medal.",
-    "exp_ta": "இந்திய வானியற்பியல் கழகத்தின் இயக்குநர் டாக்டர் அன்னபூர்ணி சுப்பிரமணியம் இப்பதக்கம் வென்ற முதல் இந்திய பெண்மணி ஆவார்."
-  },
-  {
-    "topic": "Awards & Honours",
-    "q_en": "Which organisation was conferred the Dr. Y.S. Rajasekhara Reddy Award 2026 carrying ₹25 lakh?",
-    "q_ta": "₹25 லட்சம் பரிசுத் தொகையைக் கொண்ட 2026 டாக்டர் ஒய்.எஸ். ராஜசேகர ரெட்டி விருது எந்த நிறுவனத்திற்கு வழங்கப்பட்டது?",
-    "options_en": [
-      "M.S. Swaminathan Research Foundation (MSSRF)",
-      "Sulabh International",
-      "SEWA (Self-Employed Women's Association)",
-      "BAIF Development Research Foundation"
-    ],
-    "options_ta": [
-      "எம்.எஸ். சுவாமிநாதன் ஆராய்ச்சி அறக்கட்டளை (MSSRF)",
-      "சுலப் இன்டர்நேஷனல்",
-      "சேவா (SEWA)",
-      "பைஃப் (BAIF) வளர்ச்சி அறக்கட்டளை"
-    ],
-    "correct": 0,
-    "exp_en": "M.S. Swaminathan Research Foundation (MSSRF) received the Dr. Y.S. Rajasekhara Reddy Award 2026.",
-    "exp_ta": "எம்.எஸ். சுவாமிநாதன் ஆராய்ச்சி அறக்கட்டளைக்கு (MSSRF) வேளாண் மற்றும் கிராமப்புற வளர்ச்சிக்காக இவ்விருது வழங்கப்பட்டது."
-  },
-  {
-    "topic": "Awards & Honours",
-    "q_en": "Who won the Sarala Puraskar, Odisha's premier literary honour, for the poetry collection 'Bishwas De Pruthvi'?",
-    "q_ta": "'பிஸ்வாஸ் தே பிருத்வி' கவிதைத் தொகுப்பிற்காக ஒடிசாவின் சரளா புரஸ்கார் (Sarala Puraskar) இலக்கிய விருதை வென்றவர் யார்?",
-    "options_en": [
-      "Ashutosh Parida",
-      "Gopinath Mohanty",
-      "Ramakanta Rath",
-      "Manoj Das"
-    ],
-    "options_ta": [
-      "அசுதோஷ் பரிதா",
-      "கோபிநாத் மொஹந்தி",
-      "ரமாகாந்த ரத்",
-      "மனோஜ் தாஸ்"
-    ],
-    "correct": 0,
-    "exp_en": "Odia poet Ashutosh Parida received the Sarala Puraskar for his poetry collection 'Bishwas De Pruthvi'.",
-    "exp_ta": "ஒடியா கவிஞர் அசுதோஷ் பரிதா தனது 'பிஸ்வாஸ் தே பிருத்வி' கவிதை நூலுக்காக சரளா புரஸ்கார் விருதைப் பெற்றார்."
-  },
-  {
-    "topic": "Awards & Honours",
-    "q_en": "Who received the Sarvottam Jeevan Raksha Padak for leading the heroic rescue of 41 trapped workers in the Silkyara tunnel?",
-    "q_ta": "சில்கியாரா சுரங்கத்தில் சிக்கிய 41 தொழிலாளர்களை மீட்டதற்காக சர்வோத்தம் ஜீவன் ரக்ஷா பதக்கம் யாருக்கு வழங்கப்பட்டது?",
-    "options_en": [
-      "Rat-hole miners of the Silkyara Tunnel rescue",
-      "NDRF 8th Battalion Team",
-      "Border Roads Organisation Engineering Wing",
-      "Uttarakhand SDRF Deep Divers"
-    ],
-    "options_ta": [
-      "சில்கியாரா சுரங்க மீட்பு பணியில் ஈடுபட்ட எலிவளை சுரங்கத் தொழிலாளர்கள் (Rat-hole miners)",
-      "NDRF 8-வது பட்டாலியன் படைப்பிரிவு",
-      "எல்லைச் சாலைகள் அமைப்பு (BRO) பொறியாளர்கள்",
-      "உத்தரகாண்ட் SDRF மீட்புக் குழு"
-    ],
-    "correct": 0,
-    "exp_en": "12 rat-hole miners were honoured with Sarvottam Jeevan Raksha Padak for rescuing 41 trapped workers in Uttarakhand.",
-    "exp_ta": "உத்தரகாண்ட் சில்கியாரா சுரங்க மீட்பில் துணிச்சலாக செயல்பட்ட 12 எலிவளை சுரங்க தொழிலாளர்களுக்கு சர்வோத்தம் ஜீவன் ரக்ஷா பதக்கம் வழங்கப்பட்டது."
-  },
-  {
-    "topic": "Awards & Honours",
-    "q_en": "The Fields Medal 2026 in mathematics was awarded to which of the following researchers?",
-    "q_ta": "2026 கணிதவியல் ஃபீல்ட்ஸ் பதக்கம் (Fields Medal) கீழ்க்கண்டவர்களில் யாருக்கு வழங்கப்பட்டது?",
-    "options_en": [
-      "Hong Wang and Yu Deng",
-      "Akshay Venkatesh and Terence Tao",
-      "Manjul Bhargava and Peter Scholze",
-      "Maryam Mirzakhani and Artur Avila"
-    ],
-    "options_ta": [
-      "ஹாங் வாங் மற்றும் யு டெங்",
-      "அக்‌ஷய் வெங்கடேஷ் மற்றும் டெரன்ஸ் தாவோ",
-      "மஞ்சுள் பார்கவா மற்றும் பீட்டர் ஷோல்ஸ்",
-      "மரியம் மிர்சாக்கானி மற்றும் ஆர்டூர் அவிலா"
-    ],
-    "correct": 0,
-    "exp_en": "Fields Medal 2026 was awarded to Yu Deng, John Pardon, Jacob Tsimerman, and Hong Wang.",
-    "exp_ta": "2026 ஃபீல்ட்ஸ் பதக்கம் யு டெங், ஜான் பர்டன், ஜேக்கப் சிம்மர்மேன் மற்றும் ஹாங் வாங் ஆகியோருக்கு வழங்கப்பட்டது."
-  },
-  {
-    "topic": "Sports",
-    "q_en": "Who won the Saint Louis Grand Chess Tour 2026 by defeating Fabiano Caruana in the finals?",
-    "q_ta": "செயின்ட் லூயிஸ் கிராண்ட் செஸ் டூர் 2026 இறுதிப் போட்டியில் ஃபேபியானோ கருவானாவை வீழ்த்தி பட்டம் வென்றவர் யார்?",
-    "options_en": [
-      "R. Praggnanandhaa",
-      "D. Gukesh",
-      "Arjun Erigaisi",
-      "Vidit Gujrathi"
-    ],
-    "options_ta": [
-      "ஆர். பிரக்ஞானந்தா",
-      "டி. குகேஷ்",
-      "அர்ஜுன் எரிகைசி",
-      "விதித் குஜராத்தி"
-    ],
-    "correct": 0,
-    "exp_en": "R. Praggnanandhaa defeated defending champion Fabiano Caruana 15-13 to become the first Indian to win the Grand Chess Tour.",
-    "exp_ta": "ஆர். பிரக்ஞானந்தா ஃபேபியானோ கருவானாவை 15-13 என்ற கணக்கில் வீழ்த்தி கிராண்ட் செஸ் டூர் வென்ற முதல் இந்தியரானார்."
-  },
-  {
-    "topic": "Sports",
-    "q_en": "Which team won the 135th Durand Cup 2026 football tournament by defeating Mohun Bagan SG?",
-    "q_ta": "மோகன் பகான் அணியை வீழ்த்தி 135-வது டியூரண்ட் கோப்பை 2026 கால்பந்து பட்டத்தை வென்ற அணி எது?",
-    "options_en": [
-      "East Bengal FC",
-      "NorthEast United FC",
-      "Bengaluru FC",
-      "FC Goa"
-    ],
-    "options_ta": [
-      "ஈஸ்ட் பெங்கால் எஃப்சி",
-      "நார்த்ஈஸ்ட் யுனைடெட் எஃப்சி",
-      "பெங்களூரு எஃப்சி",
-      "எஃப்சி கோவா"
-    ],
-    "correct": 0,
-    "exp_en": "East Bengal FC beat Mohun Bagan SG 4-1 in the final to win their 17th Durand Cup title, ending a 22-year drought.",
-    "exp_ta": "ஈஸ்ட் பெங்கால் அணி மோகன் பகானை 4-1 என வீழ்த்தி 22 ஆண்டுகளுக்குப் பிறகு தனது 17-வது டியூரண்ட் கோப்பையை வென்றது."
-  },
-  {
-    "topic": "Sports",
-    "q_en": "Who became the first Indian woman after Saina Nehwal (2008) to win the Taipei Open Badminton Championship title?",
-    "q_ta": "சாய்னா நேவாலுக்குப் (2008) பிறகு தைபே ஓபன் பேட்மிண்டன் பட்டத்தை வென்ற இளம் இந்திய வீராங்கனை யார்?",
-    "options_en": [
-      "Tanvi Sharma",
-      "Ashmita Chaliha",
-      "Anupama Upadhyaya",
-      "Treesa Jolly"
-    ],
-    "options_ta": [
-      "தன்வி சர்மா",
-      "அஷ்மிதா சாலிஹா",
-      "அனுபமா உபாத்யாயா",
-      "திரீசா ஜாலி"
-    ],
-    "correct": 0,
-    "exp_en": "Tanvi Sharma won the Taipei Open 2026 beating Vietnam's Nguyen Thuy Linh, becoming the youngest Indian to do so.",
-    "exp_ta": "தன்வி சர்மா வியட்நாமின் நுயென் துய் லின்னை வீழ்த்தி தைபே ஓபன் பட்டத்தை வென்ற இளம் இந்திய வீராங்கனையானார்."
-  },
-  {
-    "topic": "Sports",
-    "q_en": "Which nation won the FIH Men's Hockey World Cup 2026 held in Belgium and Netherlands?",
-    "q_ta": "பெல்ஜியம் மற்றும் நெதர்லாந்தில் நடைபெற்ற FIH ஆண்கள் ஹாக்கி உலகக் கோப்பை 2026 பட்டத்தை வென்ற நாடு எது?",
-    "options_en": [
-      "Germany",
-      "Spain",
-      "Netherlands",
-      "Argentina"
-    ],
-    "options_ta": [
-      "ஜெர்மனி",
-      "ஸ்பெயின்",
-      "நெதர்லாந்து",
-      "அர்ஜென்டினா"
-    ],
-    "correct": 0,
-    "exp_en": "Germany beat Spain 1-0 in the final at Wavre, Belgium to clinch its 4th World Cup title and retain the crown.",
-    "exp_ta": "இறுதிப் போட்டியில் ஸ்பெயினை 1-0 என வீழ்த்தி ஜெர்மனி தனது 4-வது உலகக் கோப்பை ஹாக்கி பட்டத்தை தக்கவைத்துக்கொண்டது."
-  },
-  {
-    "topic": "Sports",
-    "q_en": "Which traditional snake-boat won the 72nd Nehru Trophy Boat Race 2026 at Punnamada Lake, Alappuzha?",
-    "q_ta": "ஆலப்புழா புன்னமடா ஏரியில் நடைபெற்ற 72-வது நேரு கோப்பை படகுப் போட்டியில் (2026) வென்ற சுண்டன் படகு எது?",
-    "options_en": [
-      "Aroma-1 Chundan (Aroma Boat Club)",
-      "Karichal Chundan",
-      "Nadubhagam Chundan",
-      "Payippadan Chundan"
-    ],
-    "options_ta": [
-      "அரோமா-1 சுண்டன் (அரோமா போட் கிளப்)",
-      "கரிச்சல் சுண்டன்",
-      "நடுப்பாகம் சுண்டன்",
-      "பாயிப்பாடன் சுண்டன்"
-    ],
-    "correct": 0,
-    "exp_en": "Aroma-1 Chundan rowed by Aroma Boat Club, Paravur captained by Ranjith Sajeev Kochumon won the 72nd Nehru Trophy.",
-    "exp_ta": "பரவூர் அரோமா போட் கிளப்பின் அரோமா-1 சுண்டன் படகு 72-வது நேரு கோப்பை படகுப் போட்டியில் முதலிடம் பிடித்தது."
-  },
-  {
-    "topic": "International & Indices",
-    "q_en": "Which Pacific island nation officially renamed itself back to its indigenous name 'Republic of Naoero'?",
-    "q_ta": "தன் பூர்விகப் பெயரான 'ரிபப்ளிக் ஆஃப் நவோரோ' (Republic of Naoero) என்று அதிகாரப்பூர்வமாகப் பெயர் மாற்றம் செய்த பசிபிக் தீவு நாடு எது?",
-    "options_en": [
-      "Nauru",
-      "Tuvalu",
-      "Kiribati",
-      "Palau"
-    ],
-    "options_ta": [
-      "நவூரு (Nauru)",
-      "துவாலு",
-      "கிரிபாட்டி",
-      "பலாவு"
-    ],
-    "correct": 0,
-    "exp_en": "Nauru officially adopted its indigenous name 'Republic of Naoero' at the UN.",
-    "exp_ta": "நவூரு தீவு நாடு ஐக்கிய நாடுகள் சபையில் 'ரிபப்ளிக் ஆஃப் நவோரோ' என தனது பூர்விகப் பெயரை மீண்டும் ஏற்றுக்கொண்டது."
-  },
-  {
-    "topic": "International & Indices",
-    "q_en": "Which African nation officially recognised Persons of Indian Origin (PIOs) as an indigenous community?",
-    "q_ta": "இந்திய வம்சாவளியினரை (PIOs) தனது நாட்டின் பூர்விக சமூகமாக அதிகாரப்பூர்வமாக அங்கீகரித்த ஆப்பிரிக்க நாடு எது?",
-    "options_en": [
-      "Kenya",
-      "South Africa",
-      "Mauritius",
-      "Tanzania"
-    ],
-    "options_ta": [
-      "கென்யா",
-      "தென்னாப்பிரிக்கா",
-      "மொரிஷியஸ்",
-      "தான்சானியா"
-    ],
-    "correct": 0,
-    "exp_en": "Kenya officially recognised Persons of Indian Origin (PIOs) as an indigenous community.",
-    "exp_ta": "கென்யா அரசு அங்கு வாழும் இந்திய வம்சாவளியினரை நாட்டின் அங்கீகரிக்கப்பட்ட பூர்விக சமூகமாக அறிவித்தது."
-  },
-  {
-    "topic": "International & Indices",
-    "q_en": "Prime Minister Narendra Modi was conferred the 'Oliy Darajali Doʻstlik' (Order of Highest Friendship) award by which nation?",
-    "q_ta": "பிரதமர் நரேந்திர மோடிக்கு 'ஒலி தராஜலி தோஸ்ட்லிக்' (Oliy Darajali Doʻstlik) உயரிய விருது எந்த நாட்டினால் வழங்கப்பட்டது?",
-    "options_en": [
-      "Uzbekistan",
-      "Kazakhstan",
-      "Tajikistan",
-      "Kyrgyzstan"
-    ],
-    "options_ta": [
-      "உஸ்பெகிஸ்தான்",
-      "கஜகஸ்தான்",
-      "தஜிகிஸ்தான்",
-      "கிர்கிஸ்தான்"
-    ],
-    "correct": 0,
-    "exp_en": "Uzbekistan President Shavkat Mirziyoyev conferred Uzbekistan's highest honour 'Oliy Darajali Doʻstlik' on PM Narendra Modi.",
-    "exp_ta": "உஸ்பெகிஸ்தான் அதிபர் ஷவ்கத் மிர்சியோயேவ் அந்நாட்டின் மிக உயரிய விருதான 'ஒலி தராஜலி தோஸ்ட்லிக்'கை பிரதமர் மோடிக்கு வழங்கினார்."
-  },
-  {
-    "topic": "International & Indices",
-    "q_en": "According to the 'Work From Anywhere Index 2026' by IWG, what was Mumbai's global ranking?",
-    "q_ta": "சர்வதேச பணியிடக் குழுமத்தின் (IWG) 'Work From Anywhere Index 2026' பட்டியலில் மும்பை எத்தனையாவது இடத்தை பிடித்தது?",
-    "options_en": [
-      "50th",
-      "35th",
-      "77th",
-      "21st"
-    ],
-    "options_ta": [
-      "50-வது இடம்",
-      "35-வது இடம்",
-      "77-வது இடம்",
-      "21-வது இடம்"
-    ],
-    "correct": 0,
-    "exp_en": "Mumbai ranked 50th globally (Score: 77), being the only Indian city featured in the top rankings.",
-    "exp_ta": "இப்பட்டியலில் மும்பை 50-வது இடத்தைப் பெற்றது; பட்டியலில் இடம்பெற்ற ஒரே இந்திய நகரமும் மும்பையே ஆகும்."
-  },
-  {
-    "topic": "International & Indices",
-    "q_en": "In the Alphaliner H1 2026 Top 30 Container Ports ranking, what position did JNPA (Nhava Sheva) achieve?",
-    "q_ta": "ஆல்ஃபாலினர் H1 2026 உலகின் சிறந்த 30 கொள்கலன் துறைமுகங்கள் பட்டியலில் ஜவஹர்லால் நேரு துறைமுகம் (JNPA) பிடித்த இடம் என்ன?",
-    "options_en": [
-      "21st",
-      "26th",
-      "28th",
-      "18th"
-    ],
-    "options_ta": [
-      "21-வது இடம்",
-      "26-வது இடம்",
-      "28-வது இடம்",
-      "18-வது இடம்"
-    ],
-    "correct": 0,
-    "exp_en": "JNPA (Nhava Sheva) jumped from 28th to 21st position globally, recording the highest growth rate among the top 30 ports.",
-    "exp_ta": "ஜே.என்.பி.ஏ (Nhava Sheva) 28-வது இடத்திலிருந்து 21-வது இடத்திற்கு முன்னேறி மிக வேகமான வளர்ச்சியைப் பதிவு செய்தது."
-  }
-];
-
-    // RUNTIME STATE
-    let sessionQuestions = [];
-    let currentIndex = 0;
-    let userAnswers = {}; // index: optionIndex
-    let reviewStatus = {}; // index: boolean
-    let timerInterval = null;
-    let timeRemaining = 15 * 60; // 15 mins
-
-    // Shuffle helper (Fisher-Yates)
-    function shuffleArray(arr) {
-      const copy = [...arr];
-      for (let i = copy.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [copy[i], copy[j]] = [copy[j], copy[i]];
+      // 1. Pravasi Bharatiya Divas
+      {
+        id: 1,
+        en: "On which date is Pravasi Bharatiya Divas (NRI Day) celebrated to mark Gandhiji's return from South Africa in 1915?",
+        ta: "1915-ல் காந்தியடிகள் தென் ஆப்பிரிக்காவிலிருந்து இந்தியா திரும்பியதை நினைவுகூரும் 'வெளிநாடு வாழ் இந்தியர் தினம்' எந்த நாளில் கொண்டாடப்படுகிறது?",
+        opts: [
+          { en: "09 January", ta: "09 ஜனவரி", correct: true },
+          { en: "15 January", ta: "15 ஜனவரி", correct: false },
+          { en: "12 January", ta: "12 ஜனவரி", correct: false },
+          { en: "25 January", ta: "25 ஜனவரி", correct: false }
+        ],
+        exp: "PDF Guide: 09 Jan - Pravasi Bharatiya Divas (NRI) / 1915: Gandhiji returned from SA (வெளிநாடு வாழ் இந்தியர் தினம்)."
+      },
+      // 2. World Braille Day
+      {
+        id: 2,
+        en: "World Braille Day is observed on which date to commemorate the birth anniversary of Louis Braille?",
+        ta: "லூயிஸ் பிரெய்லி பிறந்தநாளைக் குறிக்கும் 'உலக பிரெய்லி தினம்' எந்த நாளில் அனுசரிக்கப்படுகிறது?",
+        opts: [
+          { en: "04 January", ta: "04 ஜனவரி", correct: true },
+          { en: "01 January", ta: "01 ஜனவரி", correct: false },
+          { en: "06 January", ta: "06 ஜனவரி", correct: false },
+          { en: "10 January", ta: "10 ஜனவரி", correct: false }
+        ],
+        exp: "PDF Guide: 04 Jan - World Braille Day (Louis Braille birth anniv. / உலக பிரெய்லி தினம்)."
+      },
+      // 3. National Youth Day
+      {
+        id: 3,
+        en: "National Youth Day is observed on 12th January in honor of the birth anniversary of which leader?",
+        ta: "ஜனவரி 12 அன்று தேசிய இளைஞர் தினம் யாருடைய பிறந்தநாளை முன்னிட்டு அனுசரிக்கப்படுகிறது?",
+        opts: [
+          { en: "Swami Vivekananda (1863)", ta: "சுவாமி விவேகானந்தர் (1863)", correct: true },
+          { en: "Netaji Subhas Chandra Bose", ta: "நேதாஜி சுபாஷ் சந்திர போஸ்", correct: false },
+          { en: "Lal Bahadur Shastri", ta: "லால் பகதூர் சாஸ்திரி", correct: false },
+          { en: "Lala Lajpat Rai", ta: "லாலா லஜபதி ராய்", correct: false }
+        ],
+        exp: "PDF Guide: 12 Jan - National Youth Day / Swami Vivekananda (1863) (தேசிய இளைஞர் தினம்)."
+      },
+      // 4. Army Day
+      {
+        id: 4,
+        en: "Army Day is observed in India on 15th January to mark the taking over of command by which First Indian C-in-C?",
+        ta: "ஜனவரி 15 அன்று ராணுவ தினம் முதல் இந்திய தலைமை தளபதி (C-in-C) பொறுப்பேற்றதை குறிக்கிறது. அவர் யார்?",
+        opts: [
+          { en: "KM Cariappa", ta: "கே.எம். கரியப்பா", correct: true },
+          { en: "Sam Manekshaw", ta: "சாம் மானேகascendingஷா", correct: false },
+          { en: "Major Dhyan Chand", ta: "மேஜர் தயான் சந்த்", correct: false },
+          { en: "Sardar Patel", ta: "சர்தார் படேல்", correct: false }
+        ],
+        exp: "PDF Guide: 15 Jan - Army Day (KM Cariappa - 1st Indian C-in-C / ராணுவ தினம்)."
+      },
+      // 5. National Startup Day
+      {
+        id: 5,
+        en: "National Startup Day is observed in India on which date (celebrated since 2022)?",
+        ta: "2022 முதல் கடைபிடிக்கப்படும் 'தேசிய தொடக்க நிறுவன தினம்' (National Startup Day) எந்த நாளில் கொண்டாடப்படுகிறது?",
+        opts: [
+          { en: "16 January", ta: "16 ஜனவரி", correct: true },
+          { en: "19 January", ta: "19 ஜனவரி", correct: false },
+          { en: "23 January", ta: "23 ஜனவரி", correct: false },
+          { en: "24 January", ta: "24 ஜனவரி", correct: false }
+        ],
+        exp: "PDF Guide: 16 Jan - National Startup Day / Since 2022 (தேசிய தொடக்க நிறுவன தினம்)."
+      },
+      // 6. Parakram Diwas
+      {
+        id: 6,
+        en: "Parakram Diwas (Bravery Day) is celebrated on 23rd January to commemorate the birth anniversary of:",
+        ta: "ஜனவரி 23 அன்று கொண்டாடப்படும் 'பராக்ரம் திவாஸ்' (வீர தினம்) யாருடைய ஜெயந்தி ஆகும்?",
+        opts: [
+          { en: "Netaji Subhas Chandra Bose", ta: "நேதாஜி சுபாஷ் சந்திர போஸ்", correct: true },
+          { en: "Bhagat Singh", ta: "பகத் சிங்", correct: false },
+          { en: "Lala Lajpat Rai", ta: "லாலா லஜபதி ராய்", correct: false },
+          { en: "Chaudhary Charan Singh", ta: "சவுத்ரி சரண் சிங்", correct: false }
+        ],
+        exp: "PDF Guide: 23 Jan - Parakram Diwas (Netaji Subhas Chandra Bose / பராக்ரம் திவாஸ் - வீர தினம்)."
+      },
+      // 7. National Voters Day
+      {
+        id: 7,
+        en: "National Voters Day is observed on 25th January because which body was established on this date in 1950?",
+        ta: "1950-ல் ஜனவரி 25 அன்று எந்த அமைப்பு தொடங்கப்பட்டதால் 'தேசிய வாக்காளர் தினம்' அனுசரிக்கப்படுகிறது?",
+        opts: [
+          { en: "Election Commission of India (ECI)", ta: "இந்திய தேர்தல் ஆணையம் (ECI)", correct: true },
+          { en: "Supreme Court of India", ta: "இந்திய உச்ச நீதிமன்றம்", correct: false },
+          { en: "Planning Commission", ta: "திட்டக் குழு", correct: false },
+          { en: "UPSC", ta: "மத்திய அரசு பணியாளர் தேர்வாணையம்", correct: false }
+        ],
+        exp: "PDF Guide: 25 Jan - National Voters Day / Tourism / ECI established (1950) (தேசிய வாக்காளர் / சுற்றுலா தினம்)."
+      },
+      // 8. Martyrs' Day
+      {
+        id: 8,
+        en: "Martyrs' Day (Shaheed Diwas) marking Mahatma Gandhi's martyrdom is observed on which date?",
+        ta: "மகாத்மா காந்தி நினைவு நாளான 'தியாகிகள் தினம்' (Shaheed Diwas) எந்த தேதியில் அனுசரிக்கப்படுகிறது?",
+        opts: [
+          { en: "30 January", ta: "30 ஜனவரி", correct: true },
+          { en: "31 January", ta: "31 ஜனவரி", correct: false },
+          { en: "28 January", ta: "28 ஜனவரி", correct: false },
+          { en: "11 January", ta: "11 ஜனவரி", correct: false }
+        ],
+        exp: "PDF Guide: 30 Jan - Martyrs' Day (Shaheed Diwas) / Mahatma Gandhi Martyrdom (மகாத்மா காந்தி நினைவு நாள்)."
+      },
+      // 9. World Hindi Day
+      {
+        id: 9,
+        en: "World Hindi Day is celebrated on 10th January to commemorate Hindi being first spoken in UNGA in which year?",
+        ta: "ஐ.நா பொதுச் சபையில் (UNGA) எந்த ஆண்டு இந்தி உரை நிகழ்த்தப்பட்டதை நினைவுகூரும் வகையில் ஜனவரி 10 அன்று உலக இந்தி தினம் கொண்டாடப்படுகிறது?",
+        opts: [
+          { en: "1949", ta: "1949", correct: true },
+          { en: "1950", ta: "1950", correct: false },
+          { en: "1947", ta: "1947", correct: false },
+          { en: "1975", ta: "1975", correct: false }
+        ],
+        exp: "PDF Guide: 10 Jan - World Hindi Day / Hindi spoken in UNGA (1949) (உலக இந்தி தினம்)."
+      },
+      // 10. National Girl Child Day
+      {
+        id: 10,
+        en: "National Girl Child Day is celebrated in India on which date?",
+        ta: "இந்தியாவில் 'தேசிய பெண் குழந்தைகள் தினம்' எந்த நாளில் கொண்டாடப்படுகிறது?",
+        opts: [
+          { en: "24 January", ta: "24 ஜனவரி", correct: true },
+          { en: "25 January", ta: "25 ஜனவரி", correct: false },
+          { en: "12 January", ta: "12 ஜனவரி", correct: false },
+          { en: "08 March", ta: "08 மார்ச்", correct: false }
+        ],
+        exp: "PDF Guide: 24 Jan - National Girl Child Day (தேசிய பெண் குழந்தைகள் தினம்)."
+      },
+      // 11. World Wetlands Day
+      {
+        id: 11,
+        en: "World Wetlands Day is observed on 02nd February to mark the signing of the Ramsar Convention in which year?",
+        ta: "ராம்சார் மாநாடு கையெழுத்தானதை குறிக்கும் 'உலக சதுப்பு நிலங்கள் தினம்' (02 பிப்) எந்த ஆண்டு நிகழ்ந்தது?",
+        opts: [
+          { en: "1971", ta: "1971", correct: true },
+          { en: "1973", ta: "1973", correct: false },
+          { en: "1982", ta: "1982", correct: false },
+          { en: "1993", ta: "1993", correct: false }
+        ],
+        exp: "PDF Guide: 02 Feb - World Wetlands Day / 1971: Ramsar Convention, Iran (உலக சதுப்பு நிலங்கள் தினம்)."
+      },
+      // 12. World Cancer Day
+      {
+        id: 12,
+        en: "World Cancer Day is observed annually on which date?",
+        ta: "உலக புற்றுநோய் விழிப்புணர்வு தினம் ஆண்டுதோறும் எந்த நாளில் அனுசரிக்கப்படுகிறது?",
+        opts: [
+          { en: "04 February", ta: "04 பிப்ரவரி", correct: true },
+          { en: "01 February", ta: "01 பிப்ரவரி", correct: false },
+          { en: "10 February", ta: "10 பிப்ரவரி", correct: false },
+          { en: "28 February", ta: "28 பிப்ரவரி", correct: false }
+        ],
+        exp: "PDF Guide: 04 Feb - World Cancer Day (உலக புற்றுநோய் விழிப்புணர்வு தினம்)."
+      },
+      // 13. National Science Day
+      {
+        id: 13,
+        en: "National Science Day is celebrated on 28th February to commemorate which 1928 discovery?",
+        ta: "பிப்ரவரி 28 அன்று தேசிய அறிவியல் தினம் எந்த 1928 கண்டுபிடிப்பின் நினைவாகக் கொண்டாடப்படுகிறது?",
+        opts: [
+          { en: "Raman Effect Discovery", ta: "ராமன் விளைவு கண்டுபிடிக்கப்பட்ட நாள்", correct: true },
+          { en: "Aryabhata Launch", ta: "ஆர்யபட்டா ஏவுதல்", correct: false },
+          { en: "Penicillin Discovery", ta: "பென்சிலின் கண்டுபிடிப்பு", correct: false },
+          { en: "First Nuclear Test", ta: "முதல் அணுசக்தி சோதனை", correct: false }
+        ],
+        exp: "PDF Guide: 28 Feb - National Science Day / 1928: Raman Effect Discovery (தேசிய அறிவியல் தினம்)."
+      },
+      // 14. International Mother Language Day
+      {
+        id: 14,
+        en: "International Mother Language Day is celebrated across the world on which date?",
+        ta: "சர்வதேச தாய்மொழி தினம் உலகம் முழுவதும் எந்த நாளில் கொண்டாடப்படுகிறது?",
+        opts: [
+          { en: "21 February", ta: "21 பிப்ரவரி", correct: true },
+          { en: "22 February", ta: "22 பிப்ரவரி", correct: false },
+          { en: "24 February", ta: "24 பிப்ரவரி", correct: false },
+          { en: "27 February", ta: "27 பிப்ரவரி", correct: false }
+        ],
+        exp: "PDF Guide: 21 Feb - Int. Mother Language Day (சர்வதேச தாய்மொழி தினம்)."
+      },
+      // 15. Central Excise Day
+      {
+        id: 15,
+        en: "Central Excise Day is observed in India on which date?",
+        ta: "இந்தியாவில் 'மத்திய கலால் வரி தினம்' (Central Excise Day) எந்த நாளில் கடைபிடிக்கப்படுகிறது?",
+        opts: [
+          { en: "24 February", ta: "24 பிப்ரவரி", correct: true },
+          { en: "28 February", ta: "28 பிப்ரவரி", correct: false },
+          { en: "01 February", ta: "01 பிப்ரவரி", correct: false },
+          { en: "10 February", ta: "10 பிப்ரவரி", correct: false }
+        ],
+        exp: "PDF Guide: 24 Feb - Central Excise Day (மத்திய கலால் வரி தினம்)."
+      },
+      // 16. Switzerland Science Day
+      {
+        id: 16,
+        en: "Switzerland celebrates its Science Day in honour of Dr. A.P.J. Abdul Kalam on which date?",
+        ta: "சுவிட்சர்லாந்து நாடு டாக்டர் ஏ.பி.ஜே. அப்துல் கலாம் அவர்களின் நினைவாக எந்த நாளை 'அறிவியல் தினமாக' கொண்டாடுகிறது?",
+        opts: [
+          { en: "26 May", ta: "26 மே", correct: true },
+          { en: "28 February", ta: "28 பிப்ரவரி", correct: false },
+          { en: "11 May", ta: "11 மே", correct: false },
+          { en: "15 October", ta: "15 அக்டோபர்", correct: false }
+        ],
+        exp: "PDF Guide Static GK Booster: Switzerland Science Day: Celebrated on 26 May in honour of Dr. A.P.J. Abdul Kalam."
+      },
+      // 17. C.V. Raman Nobel Prize
+      {
+        id: 17,
+        en: "Sir C.V. Raman was awarded the Nobel Prize in Physics in which year?",
+        ta: "சர் சி.வி. ராமன் அவர்களுக்கு எந்த ஆண்டு இயற்பியலுக்கான நோபல் பரிசு வழங்கப்பட்டது?",
+        opts: [
+          { en: "1930", ta: "1930", correct: true },
+          { en: "1928", ta: "1928", correct: false },
+          { en: "1954", ta: "1954", correct: false },
+          { en: "1942", ta: "1942", correct: false }
+        ],
+        exp: "PDF Guide Static GK Booster: C.V. Raman: Awarded Nobel Prize in Physics (1930) and Bharat Ratna (1954)."
+      },
+      // 18. International Women's Day
+      {
+        id: 18,
+        en: "International Women's Day is celebrated every year on which date?",
+        ta: "சர்வதேச மகளிர் தினம் ஆண்டுதோறும் எந்த தேதியில் கொண்டாடப்படுகிறது?",
+        opts: [
+          { en: "08 March", ta: "08 மார்ச்", correct: true },
+          { en: "03 March", ta: "03 மார்ச்", correct: false },
+          { en: "15 March", ta: "15 மார்ச்", correct: false },
+          { en: "21 March", ta: "21 மார்ச்", correct: false }
+        ],
+        exp: "PDF Guide: 08 Mar - International Women's Day (சர்வதேச மகளிர் தினம்)."
+      },
+      // 19. World Consumer Rights Day
+      {
+        id: 19,
+        en: "World Consumer Rights Day is celebrated on which date?",
+        ta: "உலக நுகர்வோர் உரிமைகள் தினம் எந்த தேதியில் கொண்டாடப்படுகிறது?",
+        opts: [
+          { en: "15 March", ta: "15 மார்ச்", correct: true },
+          { en: "10 March", ta: "10 மார்ச்", correct: false },
+          { en: "16 March", ta: "16 மார்ச்", correct: false },
+          { en: "20 March", ta: "20 மார்ச்", correct: false }
+        ],
+        exp: "PDF Guide: 15 Mar - World Consumer Rights Day (உலக நுகர்வோர் உரிமைகள் தினம்)."
+      },
+      // 20. World Forestry Day
+      {
+        id: 20,
+        en: "World Forestry Day is observed on which date?",
+        ta: "உலக வனவியல் தினம் (World Forestry Day) எந்த நாளில் கடைபிடிக்கப்படுகிறது?",
+        opts: [
+          { en: "21 March", ta: "21 மார்ச்", correct: true },
+          { en: "22 March", ta: "22 மார்ச்", correct: false },
+          { en: "03 March", ta: "03 மார்ச்", correct: false },
+          { en: "05 June", ta: "05 ஜூன்", correct: false }
+        ],
+        exp: "PDF Guide: 21 Mar - World Forestry Day (உலக வனவியல் தினம்)."
+      },
+      // 21. World Water Day
+      {
+        id: 21,
+        en: "World Water Day is celebrated globally each year on which date?",
+        ta: "உலக தண்ணீர் தினம் (World Water Day) ஆண்டுதோறும் எந்த தேதியில் கொண்டாடப்படுகிறது?",
+        opts: [
+          { en: "22 March", ta: "22 மார்ச்", correct: true },
+          { en: "21 March", ta: "21 மார்ச்", correct: false },
+          { en: "22 April", ta: "22 ஏப்ரல்", correct: false },
+          { en: "23 March", ta: "23 மார்ச்", correct: false }
+        ],
+        exp: "PDF Guide: 22 Mar - World Water Day (உலக தண்ணீர் தினம்)."
+      },
+      // 22. World Tuberculosis Day
+      {
+        id: 22,
+        en: "World Tuberculosis (TB) Day is observed on 24th March. What is the bacterium causing TB?",
+        ta: "மார்ச் 24 உலக காசநோய் (TB) தினம். காசநோயை உண்டாக்கும் பாக்டீரியாவின் பெயர் என்ன?",
+        opts: [
+          { en: "Mycobacterium tuberculosis", ta: "மைக்கோபாக்டீரியம் டியூபர்குளோசிஸ்", correct: true },
+          { en: "Plasmodium vivax", ta: "பிளாஸ்மோடியம் வைவாக்ஸ்", correct: false },
+          { en: "Vibrio cholerae", ta: "விப்ரியோ காலரே", correct: false },
+          { en: "Bacillus anthracis", ta: "பேசில்லஸ் ஆந்த்ராசிஸ்", correct: false }
+        ],
+        exp: "PDF Guide: 24 Mar - World Tuberculosis Day / White Plague (Mycobacterium tb) (உலக காசநோய் தினம்)."
+      },
+      // 23. Pi Day
+      {
+        id: 23,
+        en: "Pi Day (π = 3.14) is observed every year on which date?",
+        ta: "பை (Pi Day - π = 3.14) தினம் ஆண்டுதோறும் எந்த தேதியில் அனுசரிக்கப்படுகிறது?",
+        opts: [
+          { en: "14 March", ta: "14 மார்ச்", correct: true },
+          { en: "12 March", ta: "12 மார்ச்", correct: false },
+          { en: "16 March", ta: "16 மார்ச்", correct: false },
+          { en: "24 March", ta: "24 மார்ச்", correct: false }
+        ],
+        exp: "PDF Guide: 14 Mar - Pi Day (π = 3.14) (பை தினம்)."
+      },
+      // 24. National Vaccination Day
+      {
+        id: 24,
+        en: "National Vaccination Day is observed in India on which date?",
+        ta: "இந்தியாவில் 'தேசிய தடுப்பூசி தினம்' எந்த நாளில் கடைபிடிக்கப்படுகிறது?",
+        opts: [
+          { en: "16 March", ta: "16 மார்ச்", correct: true },
+          { en: "20 March", ta: "20 மார்ச்", correct: false },
+          { en: "15 March", ta: "15 மார்ச்", correct: false },
+          { en: "04 March", ta: "04 மார்ச்", correct: false }
+        ],
+        exp: "PDF Guide: 16 Mar - National Vaccination Day (தேசிய தடுப்பூசி தினம்)."
+      },
+      // 25. Shaheed Diwas (23 Mar)
+      {
+        id: 25,
+        en: "Shaheed Diwas is observed on 23rd March to commemorate the execution of:",
+        ta: "மார்ச் 23 அன்று யாருடைய தூக்குத்தண்டனை நிறைவேற்றப்பட்டதை முன்னிட்டு தியாகிகள் தினம் அனுசரிக்கப்படுகிறது?",
+        opts: [
+          { en: "Bhagat Singh, Rajguru, and Sukhdev", ta: "பகத் சிங், ராஜகுரு மற்றும் சுக்தேவ்", correct: true },
+          { en: "Mahatma Gandhi", ta: "மகாத்மா காந்தி", correct: false },
+          { en: "Subhas Chandra Bose", ta: "சுபாஷ் சந்திர போஸ்", correct: false },
+          { en: "Lala Lajpat Rai", ta: "லாலா லஜபதி ராய்", correct: false }
+        ],
+        exp: "PDF Guide: Shaheed Diwas (23 Mar): Execution of Bhagat Singh, Rajguru, and Sukhdev."
+      },
+      // 26. World Health Day
+      {
+        id: 26,
+        en: "World Health Day (07 April) marks the establishment of WHO in which year?",
+        ta: "உலக சுகாதார தினம் (07 ஏப்ரல்) எந்த ஆண்டு WHO தொடங்கப்பட்டதை குறிக்கிறது?",
+        opts: [
+          { en: "1948", ta: "1948", correct: true },
+          { en: "1945", ta: "1945", correct: false },
+          { en: "1950", ta: "1950", correct: false },
+          { en: "1952", ta: "1952", correct: false }
+        ],
+        exp: "PDF Guide: 07 Apr - World Health Day / WHO established (1948) (உலக சுகாதார தினம்)."
+      },
+      // 27. Jallianwala Bagh Massacre
+      {
+        id: 27,
+        en: "The historic Jallianwala Bagh Massacre took place on 13th April in which year?",
+        ta: "ஜாலியன்வாலாபாக் படுகொலை ஏப்ரல் 13 அன்று எந்த ஆண்டில் நிகழ்ந்தது?",
+        opts: [
+          { en: "1919", ta: "1919", correct: true },
+          { en: "1920", ta: "1920", correct: false },
+          { en: "1915", ta: "1915", correct: false },
+          { en: "1931", ta: "1931", correct: false }
+        ],
+        exp: "PDF Guide: 13 Apr - Jallianwala Bagh Massacre (1919) (ஜாலியன்வாலாபாக் படுகொலை)."
+      },
+      // 28. Dr. B.R. Ambedkar Jayanti
+      {
+        id: 28,
+        en: "Dr. B.R. Ambedkar Jayanti is celebrated nationwide on which date?",
+        ta: "டாக்டர் பி.ஆர். அம்பேத்கர் பிறந்த தினம் நாடு முழுவதும் எந்த தேதியில் கொண்டாடப்படுகிறது?",
+        opts: [
+          { en: "14 April", ta: "14 ஏப்ரல்", correct: true },
+          { en: "13 April", ta: "13 ஏப்ரல்", correct: false },
+          { en: "17 April", ta: "17 ஏப்ரல்", correct: false },
+          { en: "21 April", ta: "21 ஏப்ரல்", correct: false }
+        ],
+        exp: "PDF Guide: 14 Apr - Dr. B.R. Ambedkar Jayanti (டாக்டர் அம்பேத்கர் பிறந்த தினம்)."
+      },
+      // 29. World Earth Day
+      {
+        id: 29,
+        en: "World Earth Day is celebrated annually on which date?",
+        ta: "உலக பூமி தினம் (World Earth Day) ஆண்டுதோறும் எந்த தேதியில் கடைபிடிக்கப்படுகிறது?",
+        opts: [
+          { en: "22 April", ta: "22 ஏப்ரல்", correct: true },
+          { en: "22 March", ta: "22 மார்ச்", correct: false },
+          { en: "05 June", ta: "05 ஜூன்", correct: false },
+          { en: "18 April", ta: "18 ஏப்ரல்", correct: false }
+        ],
+        exp: "PDF Guide: 22 Apr - World Earth Day (உலக பூமி தினம்)."
+      },
+      // 30. National Panchayati Raj Day
+      {
+        id: 30,
+        en: "National Panchayati Raj Day (24 April) marks the coming into force of the 73rd Amendment in which year?",
+        ta: "தேசிய பஞ்சாயத்து ராஜ் தினம் (24 ஏப்ரல்) 73வது அரசியல் சாசன திருத்தம் எந்த ஆண்டு அமலுக்கு வந்ததை குறிக்கிறது?",
+        opts: [
+          { en: "1993", ta: "1993", correct: true },
+          { en: "1992", ta: "1992", correct: false },
+          { en: "1950", ta: "1950", correct: false },
+          { en: "2005", ta: "2005", correct: false }
+        ],
+        exp: "PDF Guide: 24 Apr - National Panchayati Raj Day / 73rd Amendment came into force (1993) (தேசிய பஞ்சாயத்து ராஜ் தினம்)."
+      },
+      // 31. World Malaria Day
+      {
+        id: 31,
+        en: "World Malaria Day is observed on which date?",
+        ta: "உலக மலேரியா தினம் (World Malaria Day) எந்த தேதியில் அனுசரிக்கப்படுகிறது?",
+        opts: [
+          { en: "25 April", ta: "25 ஏப்ரல்", correct: true },
+          { en: "24 April", ta: "24 ஏப்ரல்", correct: false },
+          { en: "26 April", ta: "26 ஏப்ரல்", correct: false },
+          { en: "17 April", ta: "17 ஏப்ரல்", correct: false }
+        ],
+        exp: "PDF Guide: 25 Apr - World Malaria Day / Female Anopheles mosquito (Plasmodium) (உலக மலேரியா தினம்)."
+      },
+      // 32. World Intellectual Property Day
+      {
+        id: 32,
+        en: "World Intellectual Property Day is celebrated globally on which date?",
+        ta: "உலக அறிவுசார் சொத்துரிமை தினம் (World Intellectual Property Day) எந்த தேதியில் கொண்டாடப்படுகிறது?",
+        opts: [
+          { en: "26 April", ta: "26 ஏப்ரல்", correct: true },
+          { en: "25 April", ta: "25 ஏப்ரல்", correct: false },
+          { en: "18 April", ta: "18 ஏப்ரல்", correct: false },
+          { en: "01 May", ta: "01 மே", correct: false }
+        ],
+        exp: "PDF Guide: 26 Apr - World Intellectual Property Day (உலக அறிவுசார் சொத்துரிமை தினம்)."
+      },
+      // 33. Labour Day
+      {
+        id: 33,
+        en: "Labour Day (May Day) / Gujarat & Maharashtra Day is celebrated on which date?",
+        ta: "தொழிலாளர் தினம் (மே தினம்) / குஜராத் & மகாராஷ்டிரா உருவான தினம் எந்த நாளில் கொண்டாடப்படுகிறது?",
+        opts: [
+          { en: "01 May", ta: "01 மே", correct: true },
+          { en: "03 May", ta: "03 மே", correct: false },
+          { en: "07 May", ta: "07 மே", correct: false },
+          { en: "08 May", ta: "08 மே", correct: false }
+        ],
+        exp: "PDF Guide: 01 May - Labour Day (May Day) / Guj & MH Day (தொழிலாளர் தினம் / குஜராத் & மகா. தினம்)."
+      },
+      // 34. Press Freedom Day
+      {
+        id: 34,
+        en: "World Press Freedom Day is observed on which date?",
+        ta: "உலக பத்திரிகை சுதந்திர தினம் எந்த தேதியில் அனுசரிக்கப்படுகிறது?",
+        opts: [
+          { en: "03 May", ta: "03 மே", correct: true },
+          { en: "01 May", ta: "01 மே", correct: false },
+          { en: "07 May", ta: "07 மே", correct: false },
+          { en: "11 May", ta: "11 மே", correct: false }
+        ],
+        exp: "PDF Guide: 03 May - Press Freedom Day (பத்திரிகை சுதந்திர தினம்)."
+      },
+      // 35. National Technology Day
+      {
+        id: 35,
+        en: "National Technology Day is celebrated in India on which date?",
+        ta: "இந்தியாவில் 'தேசிய தொழில்நுட்ப தினம்' (National Technology Day) எந்த தேதியில் கொண்டாடப்படுகிறது?",
+        opts: [
+          { en: "11 May", ta: "11 மே", correct: true },
+          { en: "12 May", ta: "12 மே", correct: false },
+          { en: "08 May", ta: "08 மே", correct: false },
+          { en: "21 May", ta: "21 மே", correct: false }
+        ],
+        exp: "PDF Guide: 11 May - National Technology Day (தேசிய தொழில்நுட்ப தினம்)."
+      },
+      // 36. International Nurses Day
+      {
+        id: 36,
+        en: "International Nurses Day (12 May) commemorates the birth anniversary of which pioneer?",
+        ta: "சர்வதேச செவிலியர் தினம் (12 மே) யாருடைய பிறந்தநாளைக் குறிக்கிறது?",
+        opts: [
+          { en: "Florence Nightingale", ta: "புளோரன்ஸ் நைட்டிங்கேல்", correct: true },
+          { en: "Mother Teresa", ta: "அன்னை தெரசா", correct: false },
+          { en: "Clara Barton", ta: "கிளாரா பார்டன்", correct: false },
+          { en: "Sarojini Naidu", ta: "சரோஜினி நாயுடு", correct: false }
+        ],
+        exp: "PDF Guide: 12 May - International Nurses Day / Florence Nightingale (Lady with Lamp) (சர்வதேச செவிலியர் தினம்)."
+      },
+      // 37. Anti-Tobacco Day
+      {
+        id: 37,
+        en: "Anti-Tobacco Day is observed globally on which date?",
+        ta: "புகையிலை எதிர்ப்பு தினம் (Anti-Tobacco Day) எந்த தேதியில் கடைபிடிக்கப்படுகிறது?",
+        opts: [
+          { en: "31 May", ta: "31 மே", correct: true },
+          { en: "21 May", ta: "21 மே", correct: false },
+          { en: "22 May", ta: "22 மே", correct: false },
+          { en: "05 June", ta: "05 ஜூன்", correct: false }
+        ],
+        exp: "PDF Guide: 31 May - Anti-Tobacco Day (புகையிலை எதிர்ப்பு தினம்)."
+      },
+      // 38. Telangana Formation
+      {
+        id: 38,
+        en: "Telangana Formation Day is celebrated on 02nd June. In which year was Telangana formed?",
+        ta: "தெலங்கானா மாநில உதய தினம் ஜூன் 02. தெலங்கானா எந்த ஆண்டு உருவானது?",
+        opts: [
+          { en: "2014", ta: "2014", correct: true },
+          { en: "2015", ta: "2015", correct: false },
+          { en: "2000", ta: "2000", correct: false },
+          { en: "1956", ta: "1956", correct: false }
+        ],
+        exp: "PDF Guide: 02 Jun - Telangana Formation (2014) (தெலங்கானா மாநில உதய தினம்)."
+      },
+      // 39. World Environment Day
+      {
+        id: 39,
+        en: "World Environment Day is observed every year on which date?",
+        ta: "உலக சுற்றுச்சூழல் தினம் ஆண்டுதோறும் எந்த தேதியில் கடைபிடிக்கப்படுகிறது?",
+        opts: [
+          { en: "05 June", ta: "05 ஜூன்", correct: true },
+          { en: "01 June", ta: "01 ஜூன்", correct: false },
+          { en: "08 June", ta: "08 ஜூன்", correct: false },
+          { en: "21 June", ta: "21 ஜூன்", correct: false }
+        ],
+        exp: "PDF Guide: 05 Jun - World Environment Day (உலக சுற்றுச்சூழல் தினம்)."
+      },
+      // 40. International Yoga Day
+      {
+        id: 40,
+        en: "International Yoga Day is celebrated on 21st June. Since which year has it been observed?",
+        ta: "சர்வதேச யோகா தினம் (21 ஜூன்) எந்த ஆண்டிலிருந்து கடைபிடிக்கப்பட்டு வருகிறது?",
+        opts: [
+          { en: "Since 2015", ta: "2015 முதல்", correct: true },
+          { en: "Since 2014", ta: "2014 முதல்", correct: false },
+          { en: "Since 2016", ta: "2016 முதல்", correct: false },
+          { en: "Since 2020", ta: "2020 முதல்", correct: false }
+        ],
+        exp: "PDF Guide: 21 Jun - International Yoga Day / Since 2015 / Also Summer Solstice (சர்வதேச யோகா தினம்)."
+      },
+      // 41. National Statistics Day
+      {
+        id: 41,
+        en: "National Statistics Day is celebrated on 29th June on the birth anniversary of which eminent personality?",
+        ta: "தேசிய புள்ளியியல் தினம் (29 ஜூன்) யாருடைய பிறந்தநாளை முன்னிட்டு கடைபிடிக்கப்படுகிறது?",
+        opts: [
+          { en: "Prof. P.C. Mahalanobis", ta: "பேராசிரியர் பி.சி. மகலனோபிஸ்", correct: true },
+          { en: "Srinivasa Ramanujan", ta: "சீனிவாச ராமானுஜன்", correct: false },
+          { en: "C.V. Raman", ta: "சி.வி. ராமன்", correct: false },
+          { en: "Sir M. Visvesvaraya", ta: "சர் எம். விஸ்வேஸ்வரய்யா", correct: false }
+        ],
+        exp: "PDF Guide: 29 Jun - National Statistics Day / Prof. P.C. Mahalanobis birth anniv. (தேசிய புள்ளியியல் தினம்)."
+      },
+      // 42. Kargil Vijay Diwas
+      {
+        id: 42,
+        en: "Kargil Vijay Diwas is celebrated on which date to mark the 1999 victory?",
+        ta: "1999 கார்கில் போரின் வெற்றியை குறிக்கும் 'கார்கில் வெற்றி தினம்' எந்த தேதியில் கொண்டாடப்படுகிறது?",
+        opts: [
+          { en: "26 July", ta: "26 ஜூலை", correct: true },
+          { en: "29 July", ta: "29 ஜூலை", correct: false },
+          { en: "15 August", ta: "15 ஆகஸ்ட்", correct: false },
+          { en: "16 December", ta: "16 டிசம்பர்", correct: false }
+        ],
+        exp: "PDF Guide: 26 Jul - Kargil Vijay Diwas (1999) (கார்கில் வெற்றி தினம்)."
+      },
+      // 43. International Tiger Day
+      {
+        id: 43,
+        en: "International Tiger Day is observed on 29th July following which 2010 declaration?",
+        ta: "சர்வதேச புலிகள் தினம் (29 ஜூலை) 2010-ல் எந்த மாநாட்டு பிரகடனத்தின்படி ஏற்றுக்கொள்ளப்பட்டது?",
+        opts: [
+          { en: "St. Petersburg Declaration", ta: "செயின்ட் பீட்டர்ஸ்பர்க் மாநாடு பிரகடனம்", correct: true },
+          { en: "Ramsar Convention", ta: "ராம்சார் உடன்படிக்கை", correct: false },
+          { en: "Montreal Protocol", ta: "மான்ட்ரியல் புரோட்டோகால்", correct: false },
+          { en: "Stockholm Declaration", ta: "ஸ்டாக்ஹோம் பிரகடனம்", correct: false }
+        ],
+        exp: "PDF Guide: 29 Jul - International Tiger Day / St. Petersburg Declaration (2010) (சர்வதேச புலிகள் தினம்)."
+      },
+      // 44. Project Tiger launch
+      {
+        id: 44,
+        en: "In which year was 'Project Tiger' launched in India?",
+        ta: "இந்தியாவில் 'புராஜெக்ட் டைகர்' (Project Tiger) எந்த ஆண்டு தொடங்கப்பட்டது?",
+        opts: [
+          { en: "1973", ta: "1973", correct: true },
+          { en: "1971", ta: "1971", correct: false },
+          { en: "1992", ta: "1992", correct: false },
+          { en: "2010", ta: "2010", correct: false }
+        ],
+        exp: "PDF Guide: Project Tiger: Launched in 1973 (புராஜெக்ட் டைகர் 1973-ல் தொடங்கப்பட்டது)."
+      },
+      // 45. National Handloom / Javelin Day
+      {
+        id: 45,
+        en: "National Handloom Day and Javelin Day (honouring Neeraj Chopra) is observed on which date?",
+        ta: "தேசிய கைத்தறி தினம் மற்றும் ஈட்டி எறிதல் தினம் (நீரஜ் சோப்ரா) எந்த தேதியில் கடைபிடிக்கப்படுகிறது?",
+        opts: [
+          { en: "07 August", ta: "07 ஆகஸ்ட்", correct: true },
+          { en: "06 August", ta: "06 ஆகஸ்ட்", correct: false },
+          { en: "08 August", ta: "08 ஆகஸ்ட்", correct: false },
+          { en: "29 August", ta: "29 ஆகஸ்ட்", correct: false }
+        ],
+        exp: "PDF Guide: 07 Aug - National Handloom / Javelin Day (கைத்தறி / ஈட்டி எறிதல் தினம் நீரஜ்)."
+      },
+      // 46. National Sports Day
+      {
+        id: 46,
+        en: "National Sports Day in India is celebrated on 29th August on the birth anniversary of:",
+        ta: "இந்தியாவில் தேசிய விளையாட்டு தினம் (29 ஆகஸ்ட்) யாருடைய பிறந்தநாளை முன்னிட்டு கொண்டாடப்படுகிறது?",
+        opts: [
+          { en: "Major Dhyan Chand", ta: "மேஜர் தயான் சந்த்", correct: true },
+          { en: "Milkha Singh", ta: "மில்கா சிங்", correct: false },
+          { en: "K.D. Singh Babu", ta: "கே.டி. சிங் பாபு", correct: false },
+          { en: "Neeraj Chopra", ta: "நீரஜ் சோப்ரா", correct: false }
+        ],
+        exp: "PDF Guide: 29 Aug - National Sports Day / Major Dhyan Chand birth anniv. (தேசிய விளையாட்டு தினம்)."
+      },
+      // 47. National Teachers' Day
+      {
+        id: 47,
+        en: "National Teachers' Day in India is observed on 05th September on the birth anniversary of:",
+        ta: "இந்தியாவில் தேசிய ஆசிரியர் தினம் (05 செப்) யாருடைய பிறந்தநாளை முன்னிட்டு அனுசரிக்கப்படுகிறது?",
+        opts: [
+          { en: "Dr. S. Radhakrishnan (1st Vice President)", ta: "டாக்டர் சர்வபள்ளி ராதாகிருஷ்ணன் (முதல் துணைக் குடியரசுத் தலைவர்)", correct: true },
+          { en: "Dr. A.P.J. Abdul Kalam", ta: "டாக்டர் ஏ.பி.ஜே. அப்துல் கலாம்", correct: false },
+          { en: "Maulana Abul Kalam Azad", ta: "மௌலானா அபுல் கலாம் ஆசாத்", correct: false },
+          { en: "Rabindranath Tagore", ta: "ரவீந்திரநாத் தாகூர்", correct: false }
+        ],
+        exp: "PDF Guide: 05 Sep - National Teachers' Day / Dr. S. Radhakrishnan (1st VP) (தேசிய ஆசிரியர் தினம்)."
+      },
+      // 48. Hindi Diwas
+      {
+        id: 48,
+        en: "Hindi Diwas is celebrated on 14th September to mark the official language adoption in which year?",
+        ta: "இந்தி அலுவல் மொழியாக ஏற்கப்பட்டதை குறிக்கும் 'இந்தி திவாஸ்' (14 செப்டம்பர்) எந்த ஆண்டு நிகழ்ந்தது?",
+        opts: [
+          { en: "1949", ta: "1949", correct: true },
+          { en: "1950", ta: "1950", correct: false },
+          { en: "1947", ta: "1947", correct: false },
+          { en: "1956", ta: "1956", correct: false }
+        ],
+        exp: "PDF Guide: 14 Sep - Hindi Diwas / Official language adoption (1949) (இந்தி திவாஸ் - அலுவல் மொழி)."
+      },
+      // 49. World Ozone Day
+      {
+        id: 49,
+        en: "World Ozone Day is celebrated on 16th September to commemorate which protocol?",
+        ta: "உலக ஓசோன் தினம் (16 செப்டம்பர்) எந்த உடன்படிக்கையை முன்னிட்டு அனுசரிக்கப்படுகிறது?",
+        opts: [
+          { en: "Montreal Protocol", ta: "மான்ட்ரியல் புரோட்டோகால் (Montreal Protocol)", correct: true },
+          { en: "Kyoto Protocol", ta: "கியோட்டோ நெறிமுறை", correct: false },
+          { en: "Paris Agreement", ta: "பாரிஸ் ஒப்பந்தம்", correct: false },
+          { en: "Ramsar Convention", ta: "ராம்சார் உடன்படிக்கை", correct: false }
+        ],
+        exp: "PDF Guide: 16 Sep - World Ozone Day (Montreal Protocol) (உலக ஓசோன் தினம்)."
+      },
+      // 50. Rashtriya Ekta Diwas
+      {
+        id: 50,
+        en: "Rashtriya Ekta Diwas (National Unity Day) is celebrated on 31st October on the birth anniversary of:",
+        ta: "தேசிய ஒற்றுமை தினம் (Rashtriya Ekta Diwas - 31 அக்டோபர்) யாருடைய ஜெயந்தி ஆகும்?",
+        opts: [
+          { en: "Sardar Vallabhbhai Patel (Iron Man)", ta: "சர்தார் வல்லபாய் படேல் (இந்தியாவின் இரும்பு மனிதர்)", correct: true },
+          { en: "Subhas Chandra Bose", ta: "சுபாஷ் சந்திர போஸ்", correct: false },
+          { en: "Jawaharlal Nehru", ta: "ஜவஹர்லால் நேரு", correct: false },
+          { en: "Lal Bahadur Shastri", ta: "லால் பகதூர் சாஸ்திரி", correct: false }
+        ],
+        exp: "PDF Guide: 31 Oct - Rashtriya Ekta Diwas (National Unity) / Sardar Vallabhbhai Patel (Iron Man) (தேசிய ஒற்றுமை தினம்)."
       }
-      return copy;
+    ];
+
+    /* =======================================================
+       STATE MANAGEMENT & VARIABLES
+       ======================================================= */
+    const STATUS = {
+      NOT_VISITED: 0,
+      NOT_ANSWERED: 1,
+      ANSWERED: 2,
+      MARKED: 3,
+      MARKED_ANSWERED: 4
+    };
+
+    let questions = [];
+    let currentIndex = 0;
+    let userAnswers = {}; // { qIndex: selectedOptionIndex }
+    let questionStates = {}; // { qIndex: STATUS }
+    let timerInterval = null;
+    let timeLeft = 15 * 60; // 15 mins = 900 seconds
+    const TOTAL_QUESTIONS = 50;
+    let isPaletteCollapsed = false;
+
+    /* =======================================================
+       UTILITY: FISHER-YATES SHUFFLE ALGORITHM
+       ======================================================= */
+    function shuffleArray(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
     }
 
-    function initSession() {
-      // Deep clone and shuffle questions
-      const shuffledQuestions = shuffleArray(RAW_QUESTIONS);
-      
-      // Shuffle options for each question
-      sessionQuestions = shuffledQuestions.map((q) => {
-        const optIndices = [0, 1, 2, 3];
-        const shuffledOptIndices = shuffleArray(optIndices);
-        
-        const newOptsEn = shuffledOptIndices.map(i => q.options_en[i]);
-        const newOptsTa = shuffledOptIndices.map(i => q.options_ta[i]);
-        const newCorrectIndex = shuffledOptIndices.indexOf(q.correct);
-
+    // Deep shuffle of questions and each question's 4 options
+    function prepareSessionQuestions() {
+      const shuffledQ = shuffleArray(RAW_QUESTIONS);
+      return shuffledQ.map((q) => {
         return {
           ...q,
-          options_en: newOptsEn,
-          options_ta: newOptsTa,
-          correct: newCorrectIndex
+          opts: shuffleArray(q.opts)
         };
       });
-
-      userAnswers = {};
-      reviewStatus = {};
-      currentIndex = 0;
-      timeRemaining = 15 * 60;
     }
 
-    function startQuiz() {
-      initSession();
-      document.getElementById('startScreen').classList.add('hidden');
-      document.getElementById('resultScreen').classList.add('hidden');
-      document.getElementById('quizInterface').classList.remove('hidden');
+    /* =======================================================
+       INITIALIZATION & INSTRUCTIONS SCREEN
+       ======================================================= */
+    const agreeCheckbox = document.getElementById('agreeDisclaimer');
+    const startTestBtn = document.getElementById('startTestBtn');
+    const checkNotice = document.getElementById('checkNotice');
 
-      renderPalette();
+    agreeCheckbox.addEventListener('change', () => {
+      if (agreeCheckbox.checked) {
+        startTestBtn.disabled = false;
+        startTestBtn.classList.remove('bg-gray-600', 'cursor-not-allowed');
+        startTestBtn.classList.add('bg-amber-500', 'hover:bg-amber-600', 'text-gray-950', 'active:scale-95');
+        checkNotice.textContent = 'Ready to begin! Click button to enter exam portal.';
+        checkNotice.className = 'text-[11px] text-emerald-400 mt-2 font-semibold';
+      } else {
+        startTestBtn.disabled = true;
+        startTestBtn.classList.remove('bg-amber-500', 'hover:bg-amber-600', 'text-gray-950', 'active:scale-95');
+        startTestBtn.classList.add('bg-gray-600', 'cursor-not-allowed');
+        checkNotice.textContent = 'Please check the confirmation box above to activate the test button.';
+        checkNotice.className = 'text-[11px] text-amber-400 mt-2 font-medium';
+      }
+    });
+
+    startTestBtn.addEventListener('click', () => {
+      document.getElementById('startScreen').classList.add('hidden');
+      document.getElementById('examContainer').classList.remove('hidden');
+      initExamSession();
+    });
+
+    function initExamSession() {
+      questions = prepareSessionQuestions();
+      userAnswers = {};
+      questionStates = {};
+      currentIndex = 0;
+      timeLeft = 15 * 60;
+
+      for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+        questionStates[i] = STATUS.NOT_VISITED;
+      }
+      questionStates[0] = STATUS.NOT_ANSWERED;
+
+      renderPaletteGrid();
       loadQuestion(0);
       startTimer();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      updateStatusCounters();
     }
 
+    /* =======================================================
+       TIMER CONTROLLER
+       ======================================================= */
     function startTimer() {
-      clearInterval(timerInterval);
-      updateTimerDisplay();
-      timerInterval = setInterval(() => {
-        timeRemaining--;
-        updateTimerDisplay();
-        if (timeRemaining <= 0) {
-          clearInterval(timerInterval);
-          finalizeSubmission(true);
+      if (timerInterval) clearInterval(timerInterval);
+      const timerDisplay = document.getElementById('timerDisplay');
+
+      function updateClock() {
+        const mins = Math.floor(timeLeft / 60);
+        const secs = timeLeft % 60;
+        const formatted = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        timerDisplay.textContent = formatted;
+
+        // Visual warning under 2 mins
+        if (timeLeft <= 120) {
+          timerDisplay.classList.add('text-red-500', 'animate-pulse');
+        } else {
+          timerDisplay.classList.remove('text-red-500', 'animate-pulse');
         }
-      }, 1000);
-    }
 
-    function updateTimerDisplay() {
-      const mins = Math.floor(timeRemaining / 60);
-      const secs = timeRemaining % 60;
-      const formatted = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-      const el = document.getElementById('timerDisplay');
-      const container = document.getElementById('timerContainer');
-      el.textContent = formatted;
-
-      if (timeRemaining <= 120) {
-        container.classList.add('border-rose-400', 'bg-rose-50', 'text-rose-600', 'animate-pulse');
-      } else {
-        container.classList.remove('border-rose-400', 'bg-rose-50', 'text-rose-600', 'animate-pulse');
-      }
-    }
-
-    function renderPalette() {
-      const grid = document.getElementById('paletteGrid');
-      grid.innerHTML = '';
-
-      sessionQuestions.forEach((_, idx) => {
-        const btn = document.createElement('button');
-        btn.id = `palette-btn-${idx}`;
-        btn.className = getPaletteBtnClass(idx);
-        btn.textContent = idx + 1;
-        btn.onclick = () => loadQuestion(idx);
-        grid.appendChild(btn);
-      });
-    }
-
-    function getPaletteBtnClass(idx) {
-      const isCurrent = idx === currentIndex;
-      const hasAnswer = userAnswers[idx] !== undefined;
-      const isReview = reviewStatus[idx] === true;
-
-      let base = "h-9 rounded-xl font-bold text-xs flex items-center justify-center transition-all ";
-
-      if (isCurrent) {
-        base += "ring-2 ring-indigo-600 ring-offset-2 ";
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          finishTest();
+        } else {
+          timeLeft--;
+        }
       }
 
-      if (isReview) {
-        return base + "bg-amber-400 text-slate-900 border border-amber-500 shadow-sm";
-      } else if (hasAnswer) {
-        return base + "bg-emerald-500 text-white shadow-sm";
-      } else {
-        return base + "bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200";
-      }
+      updateClock();
+      timerInterval = setInterval(updateClock, 1000);
     }
 
-    function updatePaletteItem(idx) {
-      const btn = document.getElementById(`palette-btn-${idx}`);
-      if (btn) {
-        btn.className = getPaletteBtnClass(idx);
-      }
-    }
-
+    /* =======================================================
+       RENDER QUESTION VIEW
+       ======================================================= */
     function loadQuestion(index) {
-      if (index < 0 || index >= sessionQuestions.length) return;
-      const prev = currentIndex;
       currentIndex = index;
-      updatePaletteItem(prev);
-      updatePaletteItem(currentIndex);
 
-      const q = sessionQuestions[index];
-
-      // Update question text
-      document.getElementById('qNumPrefix').textContent = `Q${index + 1}.`;
-      document.getElementById('questionTextEn').textContent = q.q_en;
-      document.getElementById('questionTextTa').textContent = q.q_ta;
-      document.getElementById('currentTopicBadge').textContent = q.topic;
-      document.getElementById('questionNumberText').textContent = index + 1;
-
-      // Update Review Button State
-      const isMarked = reviewStatus[index] === true;
-      const rBtn = document.getElementById('markReviewBtn');
-      const rText = document.getElementById('markReviewText');
-      if (isMarked) {
-        rBtn.className = "px-3 py-1 rounded-xl border border-amber-500 text-white bg-amber-500 transition active:scale-95 text-xs font-semibold flex items-center space-x-1";
-        rText.textContent = "Marked for Review";
-      } else {
-        rBtn.className = "px-3 py-1 rounded-xl border border-amber-300 text-amber-700 bg-amber-50 hover:bg-amber-100 transition active:scale-95 text-xs font-semibold flex items-center space-x-1";
-        rText.textContent = "Mark for Review";
+      if (questionStates[index] === STATUS.NOT_VISITED) {
+        questionStates[index] = STATUS.NOT_ANSWERED;
       }
 
-      // Populate Options
+      const q = questions[index];
+      document.getElementById('currentQNum').textContent = index + 1;
+      document.getElementById('qTextEn').textContent = q.en;
+      document.getElementById('qTextTa').textContent = q.ta;
+
       const optContainer = document.getElementById('optionsContainer');
       optContainer.innerHTML = '';
 
       const letters = ['A', 'B', 'C', 'D'];
       const selected = userAnswers[index];
 
-      q.options_en.forEach((optEn, oIdx) => {
-        const optTa = q.options_ta[oIdx];
-        const isSelected = selected === oIdx;
-
-        const optDiv = document.createElement('div');
-        optDiv.className = `cursor-pointer p-4 rounded-2xl border-2 transition-all flex items-start space-x-3 ${
+      q.opts.forEach((opt, optIdx) => {
+        const isSelected = selected === optIdx;
+        const optCard = document.createElement('label');
+        optCard.className = `flex items-center space-x-3 p-3 sm:p-3.5 rounded-xl border-2 transition-all cursor-pointer ${
           isSelected 
-            ? 'border-indigo-600 bg-indigo-50/80 shadow-sm' 
-            : 'border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50/60'
+            ? 'bg-blue-50/90 border-blue-600 shadow-sm' 
+            : 'bg-white border-gray-200 hover:border-gray-300 hover:bg-slate-50'
         }`;
-        optDiv.onclick = () => selectOption(oIdx);
 
-        optDiv.innerHTML = `
-          <span class="w-6 h-6 rounded-lg text-xs font-extrabold flex items-center justify-center shrink-0 mt-0.5 ${
-            isSelected ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-600'
-          }">${letters[oIdx]}</span>
-          <div class="space-y-1 text-xs sm:text-sm">
-            <p class="font-medium ${isSelected ? 'text-indigo-950 font-semibold' : 'text-slate-800'}">${optEn}</p>
-            <p class="text-slate-500 font-normal leading-snug">${optTa}</p>
+        optCard.innerHTML = `
+          <input type="radio" name="rrbOption" value="${optIdx}" ${isSelected ? 'checked' : ''} class="w-4 h-4 text-blue-600 focus:ring-blue-500 accent-blue-600">
+          <div class="flex-1 text-xs sm:text-sm">
+            <span class="inline-block font-bold text-gray-700 bg-gray-100 rounded px-1.5 py-0.5 mr-1.5 text-[11px]">${letters[optIdx]}</span>
+            <span class="font-semibold text-gray-900">${opt.en}</span>
+            <span class="block text-blue-900 font-['Noto_Sans_Tamil'] font-medium text-[11px] sm:text-xs mt-0.5">${opt.ta}</span>
           </div>
         `;
 
-        optContainer.appendChild(optDiv);
+        optCard.addEventListener('click', () => {
+          userAnswers[index] = optIdx;
+          loadQuestion(index);
+        });
+
+        optContainer.appendChild(optCard);
       });
 
-      // Navigation Prev button disable on first
-      document.getElementById('prevBtn').disabled = (currentIndex === 0);
-      document.getElementById('nextBtn').textContent = (currentIndex === sessionQuestions.length - 1) ? 'Review / End' : 'Next →';
+      document.getElementById('btnPrev').disabled = (index === 0);
+
+      highlightActivePaletteBtn();
+      updateStatusCounters();
     }
 
-    function selectOption(oIdx) {
-      userAnswers[currentIndex] = oIdx;
-      updatePaletteItem(currentIndex);
-      loadQuestion(currentIndex);
-    }
+    /* =======================================================
+       BOTTOM PALETTE GRID RENDERING
+       ======================================================= */
+    function renderPaletteGrid() {
+      const grid = document.getElementById('paletteGrid');
+      grid.innerHTML = '';
 
-    function clearCurrentSelection() {
-      delete userAnswers[currentIndex];
-      updatePaletteItem(currentIndex);
-      loadQuestion(currentIndex);
-    }
+      for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+        const btn = document.createElement('button');
+        btn.id = `palette-btn-${i}`;
+        btn.className = `palette-btn ${getStatusClass(questionStates[i])}`;
+        btn.textContent = i + 1;
+        btn.title = `Question ${i + 1}`;
 
-    function toggleReviewCurrent() {
-      reviewStatus[currentIndex] = !reviewStatus[currentIndex];
-      updatePaletteItem(currentIndex);
-      loadQuestion(currentIndex);
-    }
+        btn.addEventListener('click', () => {
+          commitCurrentStateOnMove();
+          loadQuestion(i);
+        });
 
-    function navigateQuestion(step) {
-      const target = currentIndex + step;
-      if (target >= 0 && target < sessionQuestions.length) {
-        loadQuestion(target);
-      } else if (target >= sessionQuestions.length) {
-        confirmSubmit();
+        grid.appendChild(btn);
       }
     }
 
-    function confirmSubmit() {
-      const answered = Object.keys(userAnswers).length;
-      const reviews = Object.values(reviewStatus).filter(Boolean).length;
-      const unattempted = sessionQuestions.length - answered;
+    function getStatusClass(status) {
+      switch (status) {
+        case STATUS.ANSWERED: return 'st-answered';
+        case STATUS.NOT_ANSWERED: return 'st-not-answered';
+        case STATUS.MARKED: return 'st-marked';
+        case STATUS.MARKED_ANSWERED: return 'st-marked-answered';
+        case STATUS.NOT_VISITED:
+        default: return 'st-not-visited';
+      }
+    }
 
-      document.getElementById('modalAnsweredCount').textContent = answered;
-      document.getElementById('modalReviewCount').textContent = reviews;
-      document.getElementById('modalUnattemptedCount').textContent = unattempted;
+    function refreshPaletteButton(index) {
+      const btn = document.getElementById(`palette-btn-${index}`);
+      if (btn) {
+        btn.className = `palette-btn ${getStatusClass(questionStates[index])}`;
+        if (index === currentIndex) {
+          btn.classList.add('active-q');
+        }
+      }
+    }
+
+    function highlightActivePaletteBtn() {
+      for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+        const btn = document.getElementById(`palette-btn-${i}`);
+        if (btn) {
+          btn.className = `palette-btn ${getStatusClass(questionStates[i])}`;
+          if (i === currentIndex) {
+            btn.classList.add('active-q');
+          }
+        }
+      }
+    }
+
+    function commitCurrentStateOnMove() {
+      const ans = userAnswers[currentIndex];
+      const curState = questionStates[currentIndex];
+
+      if (curState === STATUS.MARKED || curState === STATUS.MARKED_ANSWERED) {
+        questionStates[currentIndex] = (ans !== undefined) ? STATUS.MARKED_ANSWERED : STATUS.MARKED;
+      } else {
+        questionStates[currentIndex] = (ans !== undefined) ? STATUS.ANSWERED : STATUS.NOT_ANSWERED;
+      }
+      refreshPaletteButton(currentIndex);
+    }
+
+    function updateStatusCounters() {
+      let ans = 0, notAns = 0, marked = 0;
+      for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+        const st = questionStates[i];
+        if (st === STATUS.ANSWERED || st === STATUS.MARKED_ANSWERED) ans++;
+        else if (st === STATUS.NOT_ANSWERED) notAns++;
+        if (st === STATUS.MARKED || st === STATUS.MARKED_ANSWERED) marked++;
+      }
+      document.getElementById('statAns').textContent = ans;
+      document.getElementById('statNotAns').textContent = notAns;
+      document.getElementById('statMarked').textContent = marked;
+    }
+
+    /* =======================================================
+       BUTTON CONTROLS (SAVE & NEXT, MARK, CLEAR, PREV)
+       ======================================================= */
+    document.getElementById('btnSaveNext').addEventListener('click', () => {
+      const selected = userAnswers[currentIndex];
+      if (selected !== undefined) {
+        questionStates[currentIndex] = STATUS.ANSWERED;
+      } else {
+        questionStates[currentIndex] = STATUS.NOT_ANSWERED;
+      }
+      refreshPaletteButton(currentIndex);
+
+      if (currentIndex < TOTAL_QUESTIONS - 1) {
+        loadQuestion(currentIndex + 1);
+      } else {
+        showSubmitModal();
+      }
+    });
+
+    document.getElementById('btnMarkReview').addEventListener('click', () => {
+      const selected = userAnswers[currentIndex];
+      if (selected !== undefined) {
+        questionStates[currentIndex] = STATUS.MARKED_ANSWERED;
+      } else {
+        questionStates[currentIndex] = STATUS.MARKED;
+      }
+      refreshPaletteButton(currentIndex);
+
+      if (currentIndex < TOTAL_QUESTIONS - 1) {
+        loadQuestion(currentIndex + 1);
+      } else {
+        showSubmitModal();
+      }
+    });
+
+    document.getElementById('btnClear').addEventListener('click', () => {
+      delete userAnswers[currentIndex];
+      if (questionStates[currentIndex] === STATUS.MARKED_ANSWERED) {
+        questionStates[currentIndex] = STATUS.MARKED;
+      } else {
+        questionStates[currentIndex] = STATUS.NOT_ANSWERED;
+      }
+      loadQuestion(currentIndex);
+      refreshPaletteButton(currentIndex);
+    });
+
+    document.getElementById('btnPrev').addEventListener('click', () => {
+      if (currentIndex > 0) {
+        commitCurrentStateOnMove();
+        loadQuestion(currentIndex - 1);
+      }
+    });
+
+    /* =======================================================
+       BOTTOM PALETTE COLLAPSE / EXPAND TOGGLE
+       ======================================================= */
+    const paletteToggleBar = document.getElementById('paletteToggleBar');
+    const paletteContent = document.getElementById('paletteContent');
+    const toggleText = document.getElementById('toggleText');
+    const toggleIcon = document.getElementById('toggleIcon');
+
+    function toggleBottomPalette() {
+      isPaletteCollapsed = !isPaletteCollapsed;
+      if (isPaletteCollapsed) {
+        paletteContent.classList.add('hidden');
+        toggleText.textContent = 'Expand';
+        toggleIcon.className = 'fa-solid fa-chevron-up';
+      } else {
+        paletteContent.classList.remove('hidden');
+        toggleText.textContent = 'Collapse';
+        toggleIcon.className = 'fa-solid fa-chevron-down';
+      }
+    }
+
+    paletteToggleBar.addEventListener('click', (e) => {
+      if (e.target.id === 'btnSubmitTop' || e.target.closest('#btnSubmitTop')) return;
+      toggleBottomPalette();
+    });
+
+    /* =======================================================
+       SUBMISSION CONFIRMATION MODAL & CALCULATIONS
+       ======================================================= */
+    function showSubmitModal() {
+      commitCurrentStateOnMove();
+
+      let ansCount = 0, notAnsCount = 0, markedCount = 0, notVisCount = 0;
+      for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+        const st = questionStates[i];
+        if (st === STATUS.ANSWERED || st === STATUS.MARKED_ANSWERED) ansCount++;
+        else if (st === STATUS.NOT_ANSWERED) notAnsCount++;
+        else if (st === STATUS.NOT_VISITED) notVisCount++;
+
+        if (st === STATUS.MARKED || st === STATUS.MARKED_ANSWERED) markedCount++;
+      }
+
+      document.getElementById('modalAns').textContent = ansCount;
+      document.getElementById('modalNotAns').textContent = notAnsCount;
+      document.getElementById('modalMarked').textContent = markedCount;
+      document.getElementById('modalNotVis').textContent = notVisCount;
+      document.getElementById('modalTime').textContent = document.getElementById('timerDisplay').textContent;
 
       document.getElementById('submitModal').classList.remove('hidden');
     }
 
-    function closeSubmitModal() {
+    document.getElementById('btnSubmitTop').addEventListener('click', showSubmitModal);
+    document.getElementById('btnSubmitMobile').addEventListener('click', showSubmitModal);
+
+    document.getElementById('btnCancelSubmit').addEventListener('click', () => {
       document.getElementById('submitModal').classList.add('hidden');
-    }
+    });
 
-    function finalizeSubmission(auto = false) {
-      clearInterval(timerInterval);
-      closeSubmitModal();
+    document.getElementById('btnConfirmSubmit').addEventListener('click', () => {
+      document.getElementById('submitModal').classList.add('hidden');
+      finishTest();
+    });
 
-      document.getElementById('quizInterface').classList.add('hidden');
+    /* =======================================================
+       FINISH TEST & SCORECARD GENERATION
+       ======================================================= */
+    function finishTest() {
+      if (timerInterval) clearInterval(timerInterval);
+
+      document.getElementById('examContainer').classList.add('hidden');
       document.getElementById('resultScreen').classList.remove('hidden');
+      document.getElementById('resultScreen').classList.add('flex');
 
-      calculateResults();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function calculateResults() {
       let correct = 0;
-      let incorrect = 0;
+      let wrong = 0;
+      let unattempted = 0;
 
-      sessionQuestions.forEach((q, idx) => {
-        const userChoice = userAnswers[idx];
-        if (userChoice !== undefined) {
-          if (userChoice === q.correct) {
+      questions.forEach((q, idx) => {
+        const userChoiceIdx = userAnswers[idx];
+        if (userChoiceIdx === undefined) {
+          unattempted++;
+        } else {
+          if (q.opts[userChoiceIdx].correct) {
             correct++;
           } else {
-            incorrect++;
+            wrong++;
           }
         }
       });
 
-      const totalAttempted = correct + incorrect;
-      const accuracy = totalAttempted > 0 ? Math.round((correct / totalAttempted) * 100) : 0;
+      const attempted = correct + wrong;
+      const positiveMarks = correct * 1.0;
+      const negativeMarks = wrong * 0.33;
+      const netScore = Math.max(0, positiveMarks - negativeMarks);
+      const accuracy = attempted > 0 ? ((correct / attempted) * 100).toFixed(1) : '0';
 
-      document.getElementById('scoreObtained').textContent = correct;
-      document.getElementById('correctCount').textContent = correct;
-      document.getElementById('incorrectCount').textContent = incorrect;
-      document.getElementById('accuracyRate').textContent = `${accuracy}%`;
+      const timeTakenSecs = (15 * 60) - timeLeft;
+      const timeMins = Math.floor(timeTakenSecs / 60);
+      const timeSecs = timeTakenSecs % 60;
+      const formattedTime = `${String(timeMins).padStart(2, '0')}:${String(timeSecs).padStart(2, '0')} mins`;
 
-      renderSolutionsList();
+      document.getElementById('resNetScore').textContent = netScore.toFixed(2);
+      document.getElementById('resAccuracy').textContent = `${accuracy}%`;
+      document.getElementById('resCorrect').textContent = correct;
+      document.getElementById('resPositiveMarks').textContent = `+${positiveMarks.toFixed(2)} Marks`;
+      document.getElementById('resWrong').textContent = wrong;
+      document.getElementById('resNegativeMarks').textContent = `-${negativeMarks.toFixed(2)} Penalty`;
+      document.getElementById('resAttempted').textContent = attempted;
+      document.getElementById('resUnattempted').textContent = unattempted;
+      document.getElementById('resTimeTaken').textContent = formattedTime;
+
+      renderSolutionsList('all');
     }
 
-    function renderSolutionsList() {
-      const container = document.getElementById('solutionsList');
+    /* =======================================================
+       RENDER SOLUTIONS & REVIEW (FILTERABLE)
+       ======================================================= */
+    function renderSolutionsList(filterMode) {
+      const container = document.getElementById('solutionList');
       container.innerHTML = '';
 
-      const letters = ['A', 'B', 'C', 'D'];
+      questions.forEach((q, idx) => {
+        const userChoiceIdx = userAnswers[idx];
+        const isAttempted = userChoiceIdx !== undefined;
+        const isCorrect = isAttempted && q.opts[userChoiceIdx].correct;
+        const isWrong = isAttempted && !q.opts[userChoiceIdx].correct;
+        const isSkipped = !isAttempted;
 
-      sessionQuestions.forEach((q, idx) => {
-        const userChoice = userAnswers[idx];
-        const isCorrect = userChoice === q.correct;
-        const isSkipped = userChoice === undefined;
+        if (filterMode === 'wrong' && !isWrong) return;
+        if (filterMode === 'unattempted' && !isSkipped) return;
+
+        let badgeBg = isCorrect ? 'bg-green-100 text-green-800 border-green-300' : (isWrong ? 'bg-rose-100 text-rose-800 border-rose-300' : 'bg-gray-100 text-gray-700 border-gray-300');
+        let badgeText = isCorrect ? 'CORRECT (+1.00)' : (isWrong ? 'INCORRECT (-0.33)' : 'UNATTEMPTED (0.00)');
 
         const card = document.createElement('div');
-        card.className = "p-5 sm:p-6 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-4";
-
-        let statusBadge = '';
-        if (isSkipped) {
-          statusBadge = '<span class="px-2.5 py-1 rounded-md bg-slate-200 text-slate-700 text-xs font-bold">Unattempted</span>';
-        } else if (isCorrect) {
-          statusBadge = '<span class="px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-700 text-xs font-bold">Correct (+1)</span>';
-        } else {
-          statusBadge = '<span class="px-2.5 py-1 rounded-md bg-rose-100 text-rose-700 text-xs font-bold">Incorrect (0)</span>';
-        }
-
-        let optionsMarkup = '';
-        q.options_en.forEach((optEn, oIdx) => {
-          const optTa = q.options_ta[oIdx];
-          const isUser = userChoice === oIdx;
-          const isRight = q.correct === oIdx;
-
-          let style = 'bg-white border-slate-200 text-slate-700';
-          if (isRight) {
-            style = 'bg-emerald-50 border-emerald-400 text-emerald-950 font-semibold';
-          } else if (isUser && !isRight) {
-            style = 'bg-rose-50 border-rose-400 text-rose-950 font-semibold';
-          }
-
-          optionsMarkup += `
-            <div class="p-3 rounded-xl border ${style} text-xs sm:text-sm space-y-0.5">
-              <div class="flex items-center space-x-2">
-                <span class="w-5 h-5 rounded flex items-center justify-center font-bold text-xs ${isRight ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-700'}">${letters[oIdx]}</span>
-                <span>${optEn}</span>
-                ${isRight ? '<span class="ml-auto text-emerald-600 font-bold text-xs">✓ Correct Answer</span>' : ''}
-                ${(isUser && !isRight) ? '<span class="ml-auto text-rose-600 font-bold text-xs">✗ Your Pick</span>' : ''}
-              </div>
-              <p class="text-xs text-slate-500 pl-7 font-normal">${optTa}</p>
-            </div>
-          `;
-        });
+        card.className = 'border border-gray-200 rounded-xl p-4 bg-slate-50 space-y-3';
 
         card.innerHTML = `
-          <div class="flex items-center justify-between gap-2 border-b border-slate-200/60 pb-3">
-            <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-lg">${q.topic}</span>
-            <div class="flex items-center space-x-2">
-              <span class="text-xs text-slate-400 font-semibold">Q${idx + 1} of 60</span>
-              ${statusBadge}
-            </div>
+          <div class="flex items-center justify-between border-b pb-2">
+            <span class="font-bold text-sm text-gray-800">Q.${idx + 1}</span>
+            <span class="text-xs font-bold px-2 py-0.5 rounded border ${badgeBg}">${badgeText}</span>
           </div>
-
-          <div class="space-y-1.5">
-            <p class="font-bold text-slate-900 text-sm sm:text-base">Q${idx + 1}. ${q.q_en}</p>
-            <p class="font-medium text-slate-700 text-xs sm:text-sm bg-white p-2.5 rounded-xl border border-slate-100">${q.q_ta}</p>
+          <div>
+            <p class="font-semibold text-gray-900 text-sm sm:text-base">${q.en}</p>
+            <p class="text-xs sm:text-sm font-medium text-blue-900 font-['Noto_Sans_Tamil'] mt-0.5">${q.ta}</p>
           </div>
+          <div class="space-y-1.5 text-xs sm:text-sm">
+            ${q.opts.map((opt, oIdx) => {
+              const isSelected = userChoiceIdx === oIdx;
+              const isRight = opt.correct;
+              let optStyle = 'border-gray-200 bg-white text-gray-700';
+              let optIcon = '';
 
-          <div class="space-y-2 pt-1">
-            ${optionsMarkup}
+              if (isRight) {
+                optStyle = 'border-green-400 bg-green-50/80 font-bold text-green-900';
+                optIcon = '<i class="fa-solid fa-check text-green-600 ml-auto"></i>';
+              } else if (isSelected && !isRight) {
+                optStyle = 'border-rose-400 bg-rose-50/80 font-semibold text-rose-900';
+                optIcon = '<i class="fa-solid fa-xmark text-rose-600 ml-auto"></i>';
+              }
+
+              return `
+                <div class="p-2 sm:p-2.5 rounded-lg border flex items-center justify-between ${optStyle}">
+                  <div>
+                    <span><strong>${['A','B','C','D'][oIdx]}.</strong> ${opt.en}</span>
+                    <span class="block text-[11px] font-['Noto_Sans_Tamil'] opacity-80">${opt.ta}</span>
+                  </div>
+                  ${optIcon}
+                </div>
+              `;
+            }).join('')}
           </div>
-
-          <div class="p-4 rounded-xl bg-indigo-50/70 border border-indigo-100 space-y-1 text-xs sm:text-sm">
-            <p class="font-bold text-indigo-900">Explanation / விளக்கம்:</p>
-            <p class="text-indigo-950">${q.exp_en}</p>
-            <p class="text-indigo-800 font-normal pt-1 border-t border-indigo-100">${q.exp_ta}</p>
+          <div class="bg-blue-50/60 p-2.5 rounded-lg border border-blue-100 text-xs text-blue-950">
+            <strong class="text-blue-900"><i class="fa-solid fa-circle-info mr-1"></i> PDF Note:</strong> ${q.exp}
           </div>
         `;
 
         container.appendChild(card);
       });
+
+      if (container.children.length === 0) {
+        container.innerHTML = `<p class="text-xs text-gray-500 text-center py-6">No questions found for this filter criteria.</p>`;
+      }
     }
 
-    function retakeQuiz() {
-      startQuiz();
-    }
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => {
+          b.className = 'filter-btn bg-gray-100 text-gray-700 px-2.5 py-1 rounded text-xs';
+        });
+        btn.className = 'filter-btn active bg-blue-600 text-white px-2.5 py-1 rounded text-xs';
+        renderSolutionsList(btn.getAttribute('data-filter'));
+      });
+    });
+
+    // RETAKE TEST (RESETS AND RESHUFFLES)
+    document.getElementById('btnRetake').addEventListener('click', () => {
+      document.getElementById('resultScreen').classList.add('hidden');
+      document.getElementById('resultScreen').classList.remove('flex');
+      document.getElementById('startScreen').classList.remove('hidden');
+      agreeCheckbox.checked = false;
+      startTestBtn.disabled = true;
+      startTestBtn.classList.remove('bg-amber-500', 'hover:bg-amber-600', 'text-gray-950');
+      startTestBtn.classList.add('bg-gray-600', 'cursor-not-allowed');
+      checkNotice.textContent = 'Please check the confirmation box above to activate the test button.';
+      checkNotice.className = 'text-[11px] text-amber-400 mt-2 font-medium';
+    });
+
   </script>
 </body>
 </html>
